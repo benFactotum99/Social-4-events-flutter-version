@@ -1,0 +1,119 @@
+{
+  "project_info": {
+    "project_number": "738761992067",
+    "firebase_url": "https://social4events-3a697-default-rtdb.firebaseio.com",
+    "project_id": "social4events-3a697",
+    "storage_bucket": "social4events-3a697.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738761992067:android:e68e80a62bbf38692fb8b6",
+        "android_client_info": {
+          "package_name": "com.example.firebasestorage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "738761992067-2qo7mbe2ovkkd9q6c1f70t0vp96ukdp2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkPgZIvuOFubjjQ0Jt5xMJAvqvHtpQgzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "738761992067-2qo7mbe2ovkkd9q6c1f70t0vp96ukdp2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "738761992067-kd2ola273md7hfu6g66e7bmeg7uevbp3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.social4Events"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738761992067:android:15059f2741fd9e692fb8b6",
+        "android_client_info": {
+          "package_name": "com.example.social4events"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "738761992067-2qo7mbe2ovkkd9q6c1f70t0vp96ukdp2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkPgZIvuOFubjjQ0Jt5xMJAvqvHtpQgzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "738761992067-2qo7mbe2ovkkd9q6c1f70t0vp96ukdp2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "738761992067-kd2ola273md7hfu6g66e7bmeg7uevbp3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.social4Events"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738761992067:android:2f392464664e906e2fb8b6",
+        "android_client_info": {
+          "package_name": "com.example.social_4_events"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "738761992067-2qo7mbe2ovkkd9q6c1f70t0vp96ukdp2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkPgZIvuOFubjjQ0Jt5xMJAvqvHtpQgzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "738761992067-2qo7mbe2ovkkd9q6c1f70t0vp96ukdp2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "738761992067-kd2ola273md7hfu6g66e7bmeg7uevbp3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.social4Events"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
