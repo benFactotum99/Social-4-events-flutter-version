@@ -85,11 +85,12 @@ class _LoginViewState extends State<LoginView> {
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
           errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              borderSide: BorderSide(
-                width: 2,
-                color: Colors.red,
-              )),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            borderSide: BorderSide(
+              width: 2,
+              color: Colors.red,
+            ),
+          ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
             borderSide: BorderSide(
@@ -98,9 +99,7 @@ class _LoginViewState extends State<LoginView> {
             ),
           ),
         ),
-        onChanged: (text) {
-          //viewModel.setEmail(text);
-        },
+        onChanged: (text) {},
       );
 
   Widget passwordTextFormSection() => TextFormField(
@@ -127,11 +126,12 @@ class _LoginViewState extends State<LoginView> {
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
           errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              borderSide: BorderSide(
-                width: 2,
-                color: Colors.red,
-              )),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            borderSide: BorderSide(
+              width: 2,
+              color: Colors.red,
+            ),
+          ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
             borderSide: BorderSide(
@@ -140,26 +140,29 @@ class _LoginViewState extends State<LoginView> {
             ),
           ),
         ),
-        onChanged: (text) {
-          //viewModel.setPassword(text);
-        },
+        onChanged: (text) {},
       );
 
-  Widget buttonLoginSection() => CustomButton(
-        text: 'Accedi',
-        colorButton: Colors.red,
-        colorText: Colors.white,
-        heightButton: 50,
-        widthButton: 500,
-        onPressed: () {
-          if (formKey.currentState!.validate()) {
-            BlocProvider.of<AuthenticationBloc>(context).add(
-              AuthenticationBlocEventLogin(
-                emailTextController.text,
-                passwordTextController.text,
-              ),
-            );
-          }
-        },
-      );
+  Widget buttonLoginSection() =>
+      BlocBuilder<AuthenticationBloc, AuthenticationBlocState>(
+          builder: (context, state) {
+        return CustomButton(
+          text: 'Accedi',
+          colorButton: Colors.red,
+          colorText: Colors.white,
+          heightButton: 50,
+          widthButton: 500,
+          isLoading: state is AuthenticationBlocStateLoadingAuth,
+          onPressed: () {
+            if (formKey.currentState!.validate()) {
+              BlocProvider.of<AuthenticationBloc>(context).add(
+                AuthenticationBlocEventLogin(
+                  emailTextController.text,
+                  passwordTextController.text,
+                ),
+              );
+            }
+          },
+        );
+      });
 }

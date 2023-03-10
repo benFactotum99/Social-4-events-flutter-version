@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_4_events/components/custom_persistent_bottom_bar_menu.dart';
-import 'package:social_4_events/view/home/home_cart_view.dart';
+import 'package:social_4_events/view/home/home_map_view.dart';
 import 'package:social_4_events/view/search/search_view.dart';
 import 'package:social_4_events/view/user/user_view.dart';
 
@@ -15,7 +15,7 @@ class HomeView extends StatelessWidget {
       selectedItemColor: Colors.red,
       items: [
         PersistentTabItem(
-          tab: const HomeCartView(),
+          tab: const HomeMapView(),
           icon: Icons.home,
           title: 'Home',
           navigatorkey: _tab1navigatorKey,

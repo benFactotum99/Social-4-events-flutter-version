@@ -7,7 +7,7 @@ import 'package:social_4_events/bloc/authentication/authentication_bloc_event.da
 import 'package:social_4_events/bloc/authentication/authentication_bloc_state.dart';
 import 'package:social_4_events/components/circle_image.dart';
 import 'package:social_4_events/repository/user_repository.dart';
-import 'package:social_4_events/view/home/home_cart_view.dart';
+import 'package:social_4_events/view/home/home_map_view.dart';
 import 'package:social_4_events/view/home/home_view.dart';
 import 'package:social_4_events/view/login/login_view.dart';
 import 'package:social_4_events/view/search/search_view.dart';

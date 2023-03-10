@@ -26,6 +26,7 @@ class AuthenticationBloc
 
     on<AuthenticationBlocEventLogin>((event, emit) async {
       try {
+        emit(AuthenticationBlocStateLoadingAuth());
         await userRepository.login(event.username, event.password);
         emit(AuthenticationBlocStateSuccessAuth());
       } catch (error) {

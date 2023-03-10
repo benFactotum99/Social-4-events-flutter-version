@@ -8,6 +8,8 @@ class AuthenticationBlocStateAuthenticated extends AuthenticationBlocState {}
 
 class AuthenticationBlocStateUnauthenticated extends AuthenticationBlocState {}
 
+class AuthenticationBlocStateLoadingAuth extends AuthenticationBlocState {}
+
 class AuthenticationBlocStateSuccessAuth extends AuthenticationBlocState {}
 
 class AuthenticationBlocStateErrorAuth extends AuthenticationBlocState {
