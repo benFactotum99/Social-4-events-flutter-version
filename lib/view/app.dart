@@ -7,8 +7,11 @@ import 'package:social_4_events/bloc/authentication/authentication_bloc_event.da
 import 'package:social_4_events/bloc/authentication/authentication_bloc_state.dart';
 import 'package:social_4_events/components/circle_image.dart';
 import 'package:social_4_events/repository/user_repository.dart';
+import 'package:social_4_events/view/home/home_cart_view.dart';
 import 'package:social_4_events/view/home/home_view.dart';
 import 'package:social_4_events/view/login/login_view.dart';
+import 'package:social_4_events/view/search/search_view.dart';
+import 'package:social_4_events/view/user/user_view.dart';
 
 class App extends StatelessWidget {
   final UserRepository userRepository;
@@ -33,6 +36,7 @@ class App extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         home: AnimatedSplashScreen(
+          backgroundColor: Colors.red,
           splash: const CircleImage(
             imageUrl: 'assets/images/s4e_icon.jpg',
           ),
@@ -40,20 +44,13 @@ class App extends StatelessWidget {
           splashTransition: SplashTransition.fadeTransition,
           pageTransitionType: PageTransitionType.fade,
         ),
-        onGenerateRoute: (settings) {
-          switch (settings.name) {
-            case '/login':
-              return MaterialPageRoute(
-                builder: (context) => const LoginView(),
-              );
-            case '/home':
-              return MaterialPageRoute(
-                builder: (context) => HomeView(),
-              );
-            default:
-              return null;
-          }
-        },
+        /*routes: {
+          '/login_view': (context) => LoginView(),
+          '/home_view': (context) => HomeView(),
+          '/home_cart_view': (context) => HomeCartView(),
+          '/search_view': (context) => SearchView(),
+          '/user_view': (context) => UserView(),
+        },*/
       ),
     );
   }
@@ -69,7 +66,7 @@ class AuthChecker extends StatelessWidget {
         if (state is AuthenticationBlocStateAuthenticated) {
           return HomeView();
         } else {
-          return const LoginView();
+          return LoginView();
         }
       },
     );

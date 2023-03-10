@@ -10,4 +10,7 @@ class AuthenticationBlocStateUnauthenticated extends AuthenticationBlocState {}
 
 class AuthenticationBlocStateSuccessAuth extends AuthenticationBlocState {}
 
-class AuthenticationBlocStateErrorAuth extends AuthenticationBlocState {}
+class AuthenticationBlocStateErrorAuth extends AuthenticationBlocState {
+  String errorMessage;
+  AuthenticationBlocStateErrorAuth(this.errorMessage);
+}

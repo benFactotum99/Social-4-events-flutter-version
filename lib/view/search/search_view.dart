@@ -10,6 +10,20 @@ class SearchView extends StatefulWidget {
 class _SearchViewState extends State<SearchView> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+        centerTitle: false,
+        title: Text(
+          "Cerca",
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      body: Center(),
+    );
   }
 }

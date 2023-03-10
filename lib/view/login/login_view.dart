@@ -31,7 +31,7 @@ class _LoginViewState extends State<LoginView> {
             ),
           );
         } else if (state is AuthenticationBlocStateErrorAuth) {
-          ShowMyDialog(context, "Errore", "La login non è andata a buon fine.");
+          ShowMyDialog(context, "Errore", state.errorMessage);
         }
       },
       child: Scaffold(
@@ -48,108 +48,11 @@ class _LoginViewState extends State<LoginView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TextFormField(
-                    controller: emailTextController,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'L\'email è obbligatoria';
-                      } else if (!EmailValidator.validate(value)) {
-                        return 'Inserire un\'email valida';
-                      }
-                      return null;
-                    },
-                    cursorColor: Colors.red,
-                    decoration: const InputDecoration(
-                      labelText: "Email",
-                      labelStyle: TextStyle(fontSize: 20, color: Colors.grey),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: Colors.red),
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      prefixIcon: Icon(Icons.account_circle, size: 30),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
-                      errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderSide: BorderSide(
-                            width: 2,
-                            color: Colors.red,
-                          )),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
-                    onChanged: (text) {
-                      //viewModel.setEmail(text);
-                    },
-                  ),
+                  emalTextFormSection(),
                   const SizedBox(height: 20),
-                  TextFormField(
-                    controller: passwordTextController,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'La password è obbligatoria';
-                      }
-                      return null;
-                    },
-                    cursorColor: Colors.red,
-                    obscureText: true,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    decoration: const InputDecoration(
-                      labelText: "Password",
-                      labelStyle: TextStyle(fontSize: 20, color: Colors.grey),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: Colors.red),
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      prefixIcon: Icon(Icons.key, size: 30),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
-                      errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderSide: BorderSide(
-                            width: 2,
-                            color: Colors.red,
-                          )),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
-                    onChanged: (text) {
-                      //viewModel.setPassword(text);
-                    },
-                  ),
+                  passwordTextFormSection(),
                   const SizedBox(height: 20),
-                  CustomButton(
-                    text: 'Accedi',
-                    colorButton: Colors.red,
-                    colorText: Colors.white,
-                    heightButton: 50,
-                    widthButton: 500,
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        BlocProvider.of<AuthenticationBloc>(context).add(
-                          AuthenticationBlocEventLogin(
-                            emailTextController.text,
-                            passwordTextController.text,
-                          ),
-                        );
-                      }
-                    },
-                  ),
+                  buttonLoginSection(),
                 ],
               ),
             ),
@@ -158,4 +61,105 @@ class _LoginViewState extends State<LoginView> {
       ),
     );
   }
+
+  Widget emalTextFormSection() => TextFormField(
+        controller: emailTextController,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'L\'email è obbligatoria';
+          } else if (!EmailValidator.validate(value)) {
+            return 'Inserire un\'email valida';
+          }
+          return null;
+        },
+        cursorColor: Colors.red,
+        decoration: const InputDecoration(
+          labelText: "Email",
+          labelStyle: TextStyle(fontSize: 20, color: Colors.grey),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 2, color: Colors.red),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+          prefixIcon: Icon(Icons.account_circle, size: 30),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              borderSide: BorderSide(
+                width: 2,
+                color: Colors.red,
+              )),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            borderSide: BorderSide(
+              width: 2,
+              color: Colors.red,
+            ),
+          ),
+        ),
+        onChanged: (text) {
+          //viewModel.setEmail(text);
+        },
+      );
+
+  Widget passwordTextFormSection() => TextFormField(
+        controller: passwordTextController,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'La password è obbligatoria';
+          }
+          return null;
+        },
+        cursorColor: Colors.red,
+        obscureText: true,
+        enableSuggestions: false,
+        autocorrect: false,
+        decoration: const InputDecoration(
+          labelText: "Password",
+          labelStyle: TextStyle(fontSize: 20, color: Colors.grey),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 2, color: Colors.red),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+          prefixIcon: Icon(Icons.key, size: 30),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              borderSide: BorderSide(
+                width: 2,
+                color: Colors.red,
+              )),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            borderSide: BorderSide(
+              width: 2,
+              color: Colors.red,
+            ),
+          ),
+        ),
+        onChanged: (text) {
+          //viewModel.setPassword(text);
+        },
+      );
+
+  Widget buttonLoginSection() => CustomButton(
+        text: 'Accedi',
+        colorButton: Colors.red,
+        colorText: Colors.white,
+        heightButton: 50,
+        widthButton: 500,
+        onPressed: () {
+          if (formKey.currentState!.validate()) {
+            BlocProvider.of<AuthenticationBloc>(context).add(
+              AuthenticationBlocEventLogin(
+                emailTextController.text,
+                passwordTextController.text,
+              ),
+            );
+          }
+        },
+      );
 }
