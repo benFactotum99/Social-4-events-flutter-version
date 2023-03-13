@@ -6,7 +6,7 @@ import 'package:social_4_events/bloc/authentication/authentication_bloc_event.da
 import 'package:social_4_events/bloc/authentication/authentication_bloc_state.dart';
 import 'package:social_4_events/components/custom_button.dart';
 import 'package:social_4_events/components/show_my_dialog.dart';
-import 'package:social_4_events/view/home/home_view.dart';
+import 'package:social_4_events/view/main_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -27,7 +27,7 @@ class _LoginViewState extends State<LoginView> {
         if (state is AuthenticationBlocStateSuccessAuth) {
           Navigator.of(context, rootNavigator: true).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => HomeView(),
+              builder: (context) => MainView(),
             ),
           );
         } else if (state is AuthenticationBlocStateErrorAuth) {

@@ -10,11 +10,5 @@ import 'package:social_4_events/view/app.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(
-    App(
-      userRepository: UserRepository(
-        firebaseAuth: FirebaseAuth.instance,
-      ),
-    ),
-  );
+  runApp(App());
 }
