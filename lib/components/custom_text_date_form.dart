@@ -32,7 +32,8 @@ class _CustomTextDateFormState extends State<CustomTextDateForm> {
     if (picked != null)
       setState(() {
         selectedDate = picked;
-        widget.dateController.text = DateFormat.yMd().format(selectedDate);
+        widget.dateController.text =
+            DateFormat('dd/MM/yyyy').format(selectedDate);
       });
   }
 
