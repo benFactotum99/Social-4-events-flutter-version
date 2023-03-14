@@ -43,8 +43,8 @@ class _AddEventViewState extends State<AddEventView> {
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 30, left: 45, right: 45, bottom: 30),
+              padding:
+                  EdgeInsets.only(top: 30, left: 45, right: 45, bottom: 30),
               child: Form(
                 key: formKey,
                 child: Column(
@@ -52,25 +52,25 @@ class _AddEventViewState extends State<AddEventView> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     imageEventSection(),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     nameTextSection(),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     descriptionTextSection(),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     numberPartTextSection(),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     priceTextSection(),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     locationSection(),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     startDateTextSection(),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     startTimeTextSection(),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     endDateTextSection(),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     endTimeTextSection(),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     saveButtonSection(),
                   ],
                 ),
