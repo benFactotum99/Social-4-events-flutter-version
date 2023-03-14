@@ -21,13 +21,13 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
 
     setState(() {
-      googleMapMarkers.add(
+      /*googleMapMarkers.add(
         Marker(
           markerId: MarkerId("google_plex"),
           position: LatLng(37.42796133580664, -122.085749655962),
           infoWindow: InfoWindow(title: "Google Plex"),
         ),
-      );
+      );*/
     });
   }
 
