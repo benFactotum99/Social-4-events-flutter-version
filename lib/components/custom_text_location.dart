@@ -1,52 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:social_4_events/components/custom_text_form.dart';
+import 'package:social_4_events/helpers/view_helpers/map_location.dart';
+import 'package:social_4_events/view/add/add_event_location_view.dart';
 
-class CustomTextTimeForm extends StatefulWidget {
-  final TextEditingController timeController;
+class CustomTextLocationForm extends StatefulWidget {
+  final TextEditingController textController;
   final String myLabelText;
   final String? Function(String? value) onValidator;
   final void Function(String? value) onChanged;
+  final void Function() onTap;
+  final bool readOnly;
+  final int maxLines;
 
-  const CustomTextTimeForm({
-    required this.timeController,
-    required this.myLabelText,
-    required this.onValidator,
-    required this.onChanged,
-  });
+  const CustomTextLocationForm(
+      {required this.textController,
+      required this.myLabelText,
+      required this.onValidator,
+      required this.onChanged,
+      required this.onTap,
+      this.readOnly = false,
+      this.maxLines = 1});
 
   @override
-  State<CustomTextTimeForm> createState() => _CustomTextTimeFormState();
+  State<CustomTextLocationForm> createState() => _CustomTextLocationFormState();
 }
 
-class _CustomTextTimeFormState extends State<CustomTextTimeForm> {
-  DateTime selectedDate = DateTime.now();
-  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
-
-  Future<Null> _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: selectedTime,
-    );
-    if (picked != null)
-      setState(() {
-        selectedTime = picked;
-        var _hour = selectedTime.hour.toString();
-        var _minute = selectedTime.minute.toString();
-        var _time = _hour + ':' + _minute;
-        widget.timeController.text = _time;
-      });
-  }
-
+class _CustomTextLocationFormState extends State<CustomTextLocationForm> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        _selectTime(context);
-      },
+      onTap: widget.onTap,
       child: TextFormField(
         enabled: false,
-        controller: widget.timeController,
+        maxLines: widget.maxLines,
+        readOnly: widget.readOnly,
+        controller: widget.textController,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: widget.onValidator,
         cursorColor: Colors.red,
@@ -62,6 +49,8 @@ class _CustomTextTimeFormState extends State<CustomTextTimeForm> {
             borderSide: BorderSide(width: 1, color: Colors.black),
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
             borderSide: BorderSide(
@@ -78,9 +67,6 @@ class _CustomTextTimeFormState extends State<CustomTextTimeForm> {
           ),
         ),
         onChanged: widget.onChanged,
-        /*onSaved: (val) {
-          print(val);
-        },*/
       ),
     );
   }

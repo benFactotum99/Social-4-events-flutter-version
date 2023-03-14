@@ -1,9 +1,15 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:social_4_events/components/custom_button.dart';
 import 'package:social_4_events/components/custom_text_date_form.dart';
 import 'package:social_4_events/components/custom_text_form.dart';
+import 'package:social_4_events/components/custom_text_location.dart';
 import 'package:social_4_events/components/custom_text_time_format.dart';
+import 'package:social_4_events/components/show_my_dialog.dart';
+import 'package:social_4_events/view/add/add_event_location_view.dart';
 
 class AddEventView extends StatefulWidget {
   const AddEventView({super.key});
@@ -13,6 +19,8 @@ class AddEventView extends StatefulWidget {
 }
 
 class _AddEventViewState extends State<AddEventView> {
+  File? _image;
+
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController nameTextController = TextEditingController();
   TextEditingController descriptionTextController = TextEditingController();
@@ -82,28 +90,69 @@ class _AddEventViewState extends State<AddEventView> {
     );
   }
 
-  imageEventSection() => CircleAvatar(
-        //backgroundImage: AssetImage('assets/images/avatar.png'),
-        radius: 100.0,
-        backgroundColor: Colors.grey,
-        foregroundColor: Colors.white,
-        child: Transform.scale(
-          scale: 5, // Aumenta la scala dell'icona di 1.5 volte
-          child: Icon(Icons.event),
+  imageEventSection() => InkWell(
+        onTap: () async {
+          try {
+            var pickedFile =
+                await ImagePicker().pickImage(source: ImageSource.gallery);
+            if (pickedFile != null) {
+              setState(() {
+                if (pickedFile != null) {
+                  _image = File(pickedFile.path) as File?;
+                } else {
+                  print('No image selected.');
+                }
+              });
+            } else {
+              print('No image selected.');
+            }
+          } on PlatformException catch (_) {
+            var error = "Formato immagine non valido.";
+            ShowMyDialog(context, "Errore", error);
+            print(error);
+          }
+        },
+        child: CircleAvatar(
+          radius: 100.0,
+          backgroundColor: Colors.grey,
+          foregroundColor: Colors.white,
+          child: _image == null
+              ? Transform.scale(
+                  scale: 5,
+                  child: Icon(Icons.event),
+                )
+              : ClipOval(
+                  child: Image.file(
+                    _image!,
+                    fit: BoxFit.cover,
+                    width: 200,
+                    height: 200,
+                  ),
+                ),
         ),
       );
 
   nameTextSection() => CustomTextForm(
         myLabelText: 'Nome',
         textController: nameTextController,
-        onValidator: (String? value) {},
+        onValidator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return 'Il nome è obbligatorio';
+          }
+          return null;
+        },
         onChanged: (String? value) {},
       );
 
   descriptionTextSection() => CustomTextForm(
         myLabelText: 'Descrizione',
         textController: descriptionTextController,
-        onValidator: (String? value) {},
+        onValidator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return 'La descrizione è obbligatoria';
+          }
+          return null;
+        },
         onChanged: (String? value) {},
         maxLines: 5,
       );
@@ -111,22 +160,51 @@ class _AddEventViewState extends State<AddEventView> {
   numberPartTextSection() => CustomTextForm(
         myLabelText: 'Numero partecipanti',
         textController: numberPartTextController,
-        onValidator: (String? value) {},
+        onValidator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return 'Il numero dei partecipanti è obbligatorio';
+          }
+          return null;
+        },
         onChanged: (String? value) {},
       );
 
   priceTextSection() => CustomTextForm(
         myLabelText: 'Prezzo',
         textController: priceTextController,
-        onValidator: (String? value) {},
+        onValidator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return 'Il prezzo è obbligatorio';
+          }
+          return null;
+        },
         onChanged: (String? value) {},
       );
 
-  locationSection() => CustomTextForm(
+  locationSection() => CustomTextLocationForm(
         myLabelText: 'Località',
         textController: locationTextController,
         onValidator: (String? value) {},
         onChanged: (String? value) {},
+        readOnly: true,
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AddEventLocationView(
+                onLocationsUpdated: (mapLocation) {
+                  if (mapLocation != null) {
+                    print(
+                        "${mapLocation.name} ${mapLocation.latitude} ${mapLocation.longitude}");
+
+                    setState(() {
+                      locationTextController.text = mapLocation.name;
+                    });
+                  }
+                },
+              ),
+            ),
+          );
+        },
       );
 
   startDateTextSection() => CustomTextDateForm(

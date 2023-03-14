@@ -47,5 +47,12 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>La nostra app richiede l'accesso alla libreria fotografica per consentire all'utente di scegliere le immagini da caricare.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>La nostra app richiede l'accesso alla fotocamera per consentire all'utente di scattare foto e registrare video.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>La nostra app richiede l'accesso al microfono per consentire all'utente di registrare audio durante la registrazione di video.</string>
+
 </dict>
 </plist>

@@ -57,7 +57,7 @@ class _CustomTextDateFormState extends State<CustomTextDateForm> {
           ),
           //prefixIcon: Icon(Icons.account_circle, size: 30),
           disabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 2, color: Colors.grey),
+            borderSide: BorderSide(width: 1, color: Colors.black),
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
           errorBorder: OutlineInputBorder(

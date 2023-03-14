@@ -18,25 +18,6 @@ import 'package:social_4_events/view/user/user_view.dart';
 class App extends StatelessWidget {
   const App();
 
-  /*Route<dynamic> _onGenerateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case '/login_view':
-        return MaterialPageRoute(builder: (_) => LoginView());
-      case '/home_view':
-        return MaterialPageRoute(builder: (_) => HomeView());
-      case '/main_view':
-        return MaterialPageRoute(builder: (_) => MainView());
-      case '/search_view':
-        return MaterialPageRoute(builder: (_) => SearchView());
-      case '/user_view':
-        return MaterialPageRoute(builder: (_) => UserView());
-      case '/add_event_view':
-        return MaterialPageRoute(builder: (_) => AddEventView());
-      default:
-        return MaterialPageRoute(builder: (_) => LoginView());
-    }
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -57,7 +38,7 @@ class App extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         home: AnimatedSplashScreen(
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.white,
           splash: const CircleImage(
             imageUrl: 'assets/images/s4e_icon.jpg',
           ),
