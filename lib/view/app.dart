@@ -1,12 +1,16 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:social_4_events/bloc/authentication/authentication_bloc.dart';
 import 'package:social_4_events/bloc/authentication/authentication_bloc_event.dart';
 import 'package:social_4_events/bloc/authentication/authentication_bloc_state.dart';
+import 'package:social_4_events/bloc/event/event_bloc.dart';
 import 'package:social_4_events/components/circle_image.dart';
+import 'package:social_4_events/repository/event_repository.dart';
 import 'package:social_4_events/repository/user_repository.dart';
 import 'package:social_4_events/view/add/add_event_view.dart';
 import 'package:social_4_events/view/home/home_view.dart';
@@ -26,8 +30,18 @@ class App extends StatelessWidget {
           create: (context) => AuthenticationBloc(
             userRepository: UserRepository(
               firebaseAuth: FirebaseAuth.instance,
+              firebaseFirestore: FirebaseFirestore.instance,
             ),
           )..add(AuthenticationBlocEventAppStarted()),
+        ),
+        BlocProvider(
+          create: (context) => EventBloc(
+            eventRepository: EventRepository(
+              firebaseAuth: FirebaseAuth.instance,
+              firebaseStorage: FirebaseStorage.instance,
+              firebaseFirestore: FirebaseFirestore.instance,
+            ),
+          ),
         ),
       ],
       child: MaterialApp(

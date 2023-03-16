@@ -1,3 +1,5 @@
+import 'package:social_4_events/model/user.dart';
+
 class Event {
   final String id;
   final String name;
@@ -18,7 +20,7 @@ class Event {
   final String imageUrl;
 
   Event({
-    required this.id,
+    this.id = "",
     required this.name,
     required this.description,
     required this.userCreator,
@@ -29,12 +31,12 @@ class Event {
     required this.timeStart,
     required this.end,
     required this.timeEnd,
-    required this.duration,
+    this.duration = 0,
     required this.price,
     required this.maxNumPartecipants,
-    required this.notification,
-    required this.usersPartecipants,
-    required this.imageUrl,
+    this.notification = const [],
+    this.usersPartecipants = const [],
+    this.imageUrl = "",
   });
 
   factory Event.fromSnapshot(String id, Map<String, dynamic> snapshot) => Event(

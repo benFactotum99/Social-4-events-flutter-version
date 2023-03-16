@@ -1,14 +1,22 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:social_4_events/bloc/event/event_bloc.dart';
+import 'package:social_4_events/bloc/event/event_bloc_event.dart';
+import 'package:social_4_events/bloc/event/event_bloc_state.dart';
 import 'package:social_4_events/components/custom_button.dart';
 import 'package:social_4_events/components/custom_text_date_form.dart';
 import 'package:social_4_events/components/custom_text_form.dart';
 import 'package:social_4_events/components/custom_text_location.dart';
 import 'package:social_4_events/components/custom_text_time_format.dart';
 import 'package:social_4_events/components/show_my_dialog.dart';
+import 'package:social_4_events/helpers/view_helpers/map_location.dart';
+import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/view/add/add_event_location_view.dart';
 
 class AddEventView extends StatefulWidget {
@@ -19,12 +27,13 @@ class AddEventView extends StatefulWidget {
 }
 
 class _AddEventViewState extends State<AddEventView> {
-  File? _image;
+  File? _image = null;
+  late MapLocation? mapLocation;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController nameTextController = TextEditingController();
   TextEditingController descriptionTextController = TextEditingController();
-  TextEditingController numberPartTextController = TextEditingController();
+  TextEditingController maxNumberPartTextController = TextEditingController();
   TextEditingController priceTextController = TextEditingController();
   TextEditingController locationTextController = TextEditingController();
   TextEditingController startDateTextController = TextEditingController();
@@ -34,58 +43,67 @@ class _AddEventViewState extends State<AddEventView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-        iconTheme: const IconThemeData(color: Colors.white),
-        elevation: 0,
-        centerTitle: false,
-        title: const Text(
-          "Nuovo Evento",
-          style: TextStyle(
-            color: Colors.white,
+    return BlocListener<EventBloc, EventBlocState>(
+      listener: (context, state) {
+        if (state is EventBlocStateCreated) {
+          print("Evento creato");
+        } else if (state is EventBlocStateError) {
+          print("Errore");
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red,
+          iconTheme: const IconThemeData(color: Colors.white),
+          elevation: 0,
+          centerTitle: false,
+          title: const Text(
+            "Nuovo Evento",
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
         ),
-      ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: Padding(
-              padding:
-                  EdgeInsets.only(top: 30, left: 45, right: 45, bottom: 30),
-              child: Form(
-                key: formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    imageEventSection(),
-                    SizedBox(height: 20),
-                    nameTextSection(),
-                    SizedBox(height: 20),
-                    descriptionTextSection(),
-                    SizedBox(height: 20),
-                    numberPartTextSection(),
-                    SizedBox(height: 20),
-                    priceTextSection(),
-                    SizedBox(height: 20),
-                    locationSection(),
-                    SizedBox(height: 20),
-                    startDateTextSection(),
-                    SizedBox(height: 20),
-                    startTimeTextSection(),
-                    SizedBox(height: 20),
-                    endDateTextSection(),
-                    SizedBox(height: 20),
-                    endTimeTextSection(),
-                    SizedBox(height: 20),
-                    saveButtonSection(),
-                  ],
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverToBoxAdapter(
+              child: Padding(
+                padding:
+                    EdgeInsets.only(top: 30, left: 45, right: 45, bottom: 30),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      imageEventSection(),
+                      SizedBox(height: 20),
+                      nameTextSection(),
+                      SizedBox(height: 20),
+                      descriptionTextSection(),
+                      SizedBox(height: 20),
+                      numberPartTextSection(),
+                      SizedBox(height: 20),
+                      priceTextSection(),
+                      SizedBox(height: 20),
+                      locationSection(),
+                      SizedBox(height: 20),
+                      startDateTextSection(),
+                      SizedBox(height: 20),
+                      startTimeTextSection(),
+                      SizedBox(height: 20),
+                      endDateTextSection(),
+                      SizedBox(height: 20),
+                      endTimeTextSection(),
+                      SizedBox(height: 20),
+                      saveButtonSection(),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -158,8 +176,8 @@ class _AddEventViewState extends State<AddEventView> {
       );
 
   numberPartTextSection() => CustomTextForm(
-        myLabelText: 'Numero partecipanti',
-        textController: numberPartTextController,
+        myLabelText: 'Max num di partecipanti',
+        textController: maxNumberPartTextController,
         onValidator: (String? value) {
           if (value == null || value.isEmpty) {
             return 'Il numero dei partecipanti è obbligatorio';
@@ -195,9 +213,13 @@ class _AddEventViewState extends State<AddEventView> {
                   if (mapLocation != null) {
                     print(
                         "${mapLocation.name} ${mapLocation.latitude} ${mapLocation.longitude}");
-
                     setState(() {
                       locationTextController.text = mapLocation.name;
+                      this.mapLocation = MapLocation(
+                        name: mapLocation.name,
+                        latitude: mapLocation.latitude,
+                        longitude: mapLocation.longitude,
+                      );
                     });
                   }
                 },
@@ -235,15 +257,39 @@ class _AddEventViewState extends State<AddEventView> {
         timeController: endTimeTextController,
       );
 
-  saveButtonSection() => CustomButton(
-        text: 'Salva',
-        colorButton: Colors.red,
-        colorText: Colors.white,
-        heightButton: 50,
-        widthButton: 500,
-        isLoading: false,
-        onPressed: () {
-          if (formKey.currentState!.validate()) {}
+  saveButtonSection() => BlocBuilder<EventBloc, EventBlocState>(
+        builder: (context, state) {
+          return CustomButton(
+            text: 'Salva',
+            colorButton: Colors.red,
+            colorText: Colors.white,
+            heightButton: 50,
+            widthButton: 500,
+            isLoading: state is EventBlocStateCreating,
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                var event = Event(
+                  name: nameTextController.text,
+                  description: descriptionTextController.text,
+                  locationLatitude: mapLocation!.latitude,
+                  locationLongitude: mapLocation!.longitude,
+                  locationName: mapLocation!.name,
+                  maxNumPartecipants:
+                      int.parse(maxNumberPartTextController.text),
+                  price: double.parse(priceTextController.text),
+                  start: startDateTextController.text,
+                  timeStart: startTimeTextController.text,
+                  end: endDateTextController.text,
+                  timeEnd: endTimeTextController.text,
+                  userCreator: FirebaseAuth.instance.currentUser!.uid,
+                );
+
+                BlocProvider.of<EventBloc>(context).add(
+                  EventBlocEventCreate(event),
+                );
+              }
+            },
+          );
         },
       );
 }
