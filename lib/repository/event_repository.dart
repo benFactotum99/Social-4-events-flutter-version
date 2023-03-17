@@ -28,6 +28,6 @@ class EventRepository extends MasterRepository {
     await _firebaseFirestore
         .collection('users')
         .doc(user.id)
-        .update(event.toSnapshot());
+        .update(user.toSnapshot());
   }
 }

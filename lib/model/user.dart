@@ -41,23 +41,26 @@ class User {
 
   factory User.fromSnapshot(String id, Map<String, dynamic> snapshot) => User(
         id: id,
-        username: snapshot['username'],
-        password: snapshot['password'],
-        email: snapshot['email'],
-        name: snapshot['name'],
-        surname: snapshot['surname'],
-        city: snapshot['city'],
-        address: snapshot['address'],
-        postalCode: snapshot['postal_code'],
-        district: snapshot['district'],
-        nation: snapshot['nation'],
-        birthday: snapshot['birthday'],
-        gender: snapshot['gender'],
-        numEventsCreated: snapshot['num_events_created'],
-        eventsCreated: snapshot['events_created'],
-        eventsParticipated: snapshot['events_participated'],
-        notifications: snapshot['notifications'],
-        imageUrl: snapshot['image_url'],
+        username: snapshot['username'] ?? "",
+        password: snapshot['password'] ?? "",
+        email: snapshot['email'] ?? "",
+        name: snapshot['name'] ?? "",
+        surname: snapshot['surname'] ?? "",
+        city: snapshot['city'] ?? "",
+        address: snapshot['address'] ?? "",
+        postalCode: snapshot['postal_code'] ?? 0,
+        district: snapshot['district'] ?? "",
+        nation: snapshot['nation'] ?? "",
+        birthday: snapshot['birthday'] ?? "",
+        gender: snapshot['gender'] ?? "",
+        numEventsCreated: snapshot['num_events_created'] ?? 0,
+        eventsCreated:
+            (snapshot['events_created'] ?? <dynamic>[]).cast<String>(),
+        eventsParticipated:
+            (snapshot['events_participated'] ?? <dynamic>[]).cast<String>(),
+        notifications:
+            (snapshot['notifications'] ?? <dynamic>[]).cast<String>(),
+        imageUrl: snapshot['image_url'] ?? "",
       );
 
   Map<String, dynamic> toSnapshot() => {

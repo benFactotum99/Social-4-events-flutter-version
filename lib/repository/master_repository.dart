@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/model/user.dart' as model;
 
 abstract class MasterRepository {
@@ -25,5 +26,21 @@ abstract class MasterRepository {
     } else {
       throw Exception("Utente non trovato");
     }
+  }
+
+  Future<List<Event>> getEvents() async {
+    final CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('events');
+
+    QuerySnapshot querySnapshot = await collectionReference.get();
+
+    List<Event> events = [];
+    querySnapshot.docs.forEach((documentSnapshot) {
+      Event customObject = Event.fromSnapshot(
+          documentSnapshot.id, documentSnapshot.data() as Map<String, dynamic>);
+      events.add(customObject);
+    });
+
+    return events;
   }
 }

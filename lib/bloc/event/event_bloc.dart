@@ -10,9 +10,9 @@ class EventBloc extends Bloc<EventBlocEvent, EventBlocState> {
     on<EventBlocEventFetch>(
       (event, emit) async {
         try {
-          //emit(IngredientBlocStateLoading());
-          //var ingredients = await ingredientRepository.fetchIngredients();
-          //emit(IngredientBlocStateLoaded(ingredients));
+          emit(EventBlocStateLoading());
+          var events = await eventRepository.getEvents();
+          emit(EventBlocStateLoaded(events));
         } catch (error) {
           print(error);
           emit(EventBlocStateError());

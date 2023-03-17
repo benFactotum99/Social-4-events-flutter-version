@@ -18,6 +18,7 @@ import 'package:social_4_events/components/show_my_dialog.dart';
 import 'package:social_4_events/helpers/view_helpers/map_location.dart';
 import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/view/add/add_event_location_view.dart';
+import 'package:social_4_events/view/main_view.dart';
 
 class AddEventView extends StatefulWidget {
   const AddEventView({super.key});
@@ -47,6 +48,12 @@ class _AddEventViewState extends State<AddEventView> {
       listener: (context, state) {
         if (state is EventBlocStateCreated) {
           print("Evento creato");
+          BlocProvider.of<EventBloc>(context).add(EventBlocEventFetch());
+          Navigator.of(context, rootNavigator: true).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => MainView(),
+            ),
+          );
         } else if (state is EventBlocStateError) {
           print("Errore");
         }

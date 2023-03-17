@@ -15,7 +15,7 @@ class Event {
   final int duration;
   final double price;
   final int maxNumPartecipants;
-  final List<String> notification;
+  final String notification;
   final List<String> usersPartecipants;
   final String imageUrl;
 
@@ -34,29 +34,30 @@ class Event {
     this.duration = 0,
     required this.price,
     required this.maxNumPartecipants,
-    this.notification = const [],
+    this.notification = "",
     this.usersPartecipants = const [],
     this.imageUrl = "",
   });
 
   factory Event.fromSnapshot(String id, Map<String, dynamic> snapshot) => Event(
         id: id,
-        name: snapshot['name'],
-        description: snapshot['description'],
-        userCreator: snapshot['user_creator'],
-        locationLongitude: snapshot['location_longitude'],
-        locationLatitude: snapshot['location_latitude'],
-        locationName: snapshot['location_name'],
-        start: snapshot['start'],
-        timeStart: snapshot['time_start'],
-        end: snapshot['end'],
-        timeEnd: snapshot['time_end'],
-        duration: snapshot['duration'],
-        price: snapshot['price'],
-        maxNumPartecipants: snapshot['max_num_partecipants'],
-        notification: snapshot['notification'],
-        usersPartecipants: snapshot['users_partecipants'],
-        imageUrl: snapshot['image_url'],
+        name: snapshot['name'] ?? "",
+        description: snapshot['description'] ?? "",
+        userCreator: snapshot['user_creator'] ?? "",
+        locationLongitude: snapshot['location_longitude'] ?? 0.0,
+        locationLatitude: snapshot['location_latitude'] ?? 0.0,
+        locationName: snapshot['location_name'] ?? "",
+        start: snapshot['start'] ?? "",
+        timeStart: snapshot['time_start'] ?? "",
+        end: snapshot['end'] ?? "",
+        timeEnd: snapshot['time_end'] ?? "",
+        duration: snapshot['duration'] ?? 0,
+        price: snapshot['price'] ?? 0.0,
+        maxNumPartecipants: snapshot['max_num_partecipants'] ?? 0,
+        notification: snapshot['notification'] ?? "",
+        usersPartecipants:
+            (snapshot['users_partecipants'] ?? <dynamic>[]).cast<String>(),
+        imageUrl: snapshot['image_url'] ?? "",
       );
 
   Map<String, dynamic> toSnapshot() => {
