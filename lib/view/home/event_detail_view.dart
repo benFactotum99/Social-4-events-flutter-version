@@ -7,7 +7,9 @@ import 'package:social_4_events/components/custom_text_date_form.dart';
 import 'package:social_4_events/components/custom_text_form.dart';
 import 'package:social_4_events/components/custom_text_location.dart';
 import 'package:social_4_events/components/custom_text_time_format.dart';
+import 'package:social_4_events/helpers/view_helpers/map_location.dart';
 import 'package:social_4_events/model/event.dart';
+import 'package:social_4_events/view/home/event_detail_location_view.dart';
 
 class EventDetailView extends StatefulWidget {
   final Event event;
@@ -179,26 +181,17 @@ class _EventDetailViewState extends State<EventDetailView> {
         onChanged: (String? value) {},
         readOnly: true,
         onTap: () {
-          /*Navigator.of(context).push(
+          Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => AddEventLocationView(
-                onLocationsUpdated: (mapLocation) {
-                  if (mapLocation != null) {
-                    print(
-                        "${mapLocation.name} ${mapLocation.latitude} ${mapLocation.longitude}");
-                    setState(() {
-                      locationTextController.text = mapLocation.name;
-                      this.mapLocation = MapLocation(
-                        name: mapLocation.name,
-                        latitude: mapLocation.latitude,
-                        longitude: mapLocation.longitude,
-                      );
-                    });
-                  }
-                },
+              builder: (context) => EventDetailLocationView(
+                location: MapLocation(
+                  name: widget.event.locationName,
+                  latitude: widget.event.locationLatitude,
+                  longitude: widget.event.locationLongitude,
+                ),
               ),
             ),
-          );*/
+          );
         },
       );
 
