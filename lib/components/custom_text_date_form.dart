@@ -7,12 +7,14 @@ class CustomTextDateForm extends StatefulWidget {
   final String myLabelText;
   final String? Function(String? value) onValidator;
   final void Function(String? value) onChanged;
+  final bool disableTap;
 
   const CustomTextDateForm({
     required this.dateController,
     required this.myLabelText,
     required this.onValidator,
     required this.onChanged,
+    this.disableTap = false,
   });
 
   @override
@@ -41,7 +43,9 @@ class _CustomTextDateFormState extends State<CustomTextDateForm> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _selectDate(context);
+        if (widget.disableTap == false) {
+          _selectDate(context);
+        }
       },
       child: TextFormField(
         enabled: false,

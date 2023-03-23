@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 
 class CustomTextForm extends StatelessWidget {
-  final TextEditingController textController;
+  final TextEditingController? textController;
   final String myLabelText;
   final String? Function(String? value) onValidator;
   final void Function(String? value) onChanged;
   final bool readOnly;
   final int maxLines;
+  final bool enable;
 
   const CustomTextForm(
-      {required this.textController,
+      {this.textController = null,
       required this.myLabelText,
       required this.onValidator,
       required this.onChanged,
       this.readOnly = false,
+      this.enable = true,
       this.maxLines = 1});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: this.enable,
       maxLines: maxLines,
       readOnly: readOnly,
       controller: textController,
@@ -35,6 +38,10 @@ class CustomTextForm extends StatelessWidget {
         //prefixIcon: Icon(Icons.account_circle, size: 30),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(width: 1, color: Colors.black),
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
           borderSide: BorderSide(

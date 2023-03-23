@@ -7,6 +7,8 @@ import 'package:social_4_events/bloc/event/event_bloc.dart';
 import 'package:social_4_events/bloc/event/event_bloc_event.dart';
 import 'package:social_4_events/bloc/event/event_bloc_state.dart';
 import 'package:social_4_events/view/add/add_event_view.dart';
+import 'package:social_4_events/view/home/event_detail_view.dart';
+import 'package:social_4_events/view/home/event_pop_up_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -94,7 +96,28 @@ class _HomeViewState extends State<HomeView> {
                   markerId: MarkerId(event.id),
                   position:
                       LatLng(event.locationLatitude, event.locationLongitude),
-                  infoWindow: InfoWindow(title: event.locationName),
+                  //infoWindow: InfoWindow(title: event.locationName),
+                  onTap: () {
+                    print(event.id);
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext contextDialog) {
+                        return EventPopUpView(
+                          event: event,
+                          onPressed: () {
+                            Navigator.of(contextDialog).pop();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => EventDetailView(
+                                  event: event,
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
                 ),
               );
             }
