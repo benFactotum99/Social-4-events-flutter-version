@@ -47,8 +47,6 @@ class _AddEventViewState extends State<AddEventView> {
     return BlocListener<EventBloc, EventBlocState>(
       listener: (context, state) {
         if (state is EventBlocStateCreated) {
-          print("Evento creato");
-          BlocProvider.of<EventBloc>(context).add(EventBlocEventFetch());
           Navigator.of(context, rootNavigator: true).pushReplacement(
             MaterialPageRoute(
               builder: (context) => MainView(),

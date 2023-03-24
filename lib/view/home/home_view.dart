@@ -25,18 +25,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-
     BlocProvider.of<EventBloc>(context).add(EventBlocEventFetch());
-
-    setState(() {
-      /*googleMapMarkers.add(
-        Marker(
-          markerId: MarkerId("google_plex"),
-          position: LatLng(37.42796133580664, -122.085749655962),
-          infoWindow: InfoWindow(title: "Google Plex"),
-        ),
-      );*/
-    });
   }
 
   void goToLake() async {
@@ -130,7 +119,9 @@ class _HomeViewState extends State<HomeView> {
               ),
               myLocationButtonEnabled: false,
               onMapCreated: (controller) async {
-                googleMapController.complete(controller);
+                if (!googleMapController.isCompleted) {
+                  googleMapController.complete(controller);
+                }
                 final styles = await services.rootBundle
                     .loadString("assets/map_style/google_map_style.json");
                 controller.setMapStyle(styles);

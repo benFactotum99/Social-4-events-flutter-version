@@ -13,3 +13,13 @@ class EventBlocEventEdit extends EventBlocEvent {
   final Event event;
   EventBlocEventEdit(this.event);
 }
+
+class EventBlocEventAddPartecipation extends EventBlocEvent {
+  final Event event;
+  EventBlocEventAddPartecipation(this.event);
+}
+
+class EventBlocEventRemovePartecipation extends EventBlocEvent {
+  final Event event;
+  EventBlocEventRemovePartecipation(this.event);
+}

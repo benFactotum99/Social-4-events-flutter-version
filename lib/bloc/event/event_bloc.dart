@@ -33,13 +33,29 @@ class EventBloc extends Bloc<EventBlocEvent, EventBlocState> {
       },
     );
 
-    on<EventBlocEventEdit>(
+    on<EventBlocEventAddPartecipation>(
       (event, emit) async {
         try {
-          //await ingredientRepository.editIngredient(event.ingredient);
-          emit(EventBlocStateEdited());
+          emit(EventBlocStatePartecipationAdding());
+          await eventRepository.addPartecipationEvent(event.event);
+          emit(EventBlocStatePartecipationAdded());
         } catch (error) {
-          emit(EventBlocStateError());
+          print(error);
+          emit(EventBlocStatePartecipationError("Errore nella partecipazione"));
+        }
+      },
+    );
+
+    on<EventBlocEventRemovePartecipation>(
+      (event, emit) async {
+        try {
+          emit(EventBlocStatePartecipationRemoving());
+          await eventRepository.removePartecipationEvent(event.event);
+          emit(EventBlocStatePartecipationRemoved());
+        } catch (error) {
+          print(error);
+          emit(EventBlocStatePartecipationError(
+              "Errore nella rimozione della partecipazione"));
         }
       },
     );

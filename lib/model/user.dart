@@ -1,22 +1,22 @@
 class User {
-  final String id;
-  final String username;
-  final String password;
-  final String email;
-  final String name;
-  final String surname;
-  final String city;
-  final String address;
-  final int postalCode;
-  final String district;
-  final String nation;
-  final String birthday;
-  final String gender;
-  final int numEventsCreated;
-  final List<String> eventsCreated;
-  final List<String> eventsParticipated;
-  final List<String> notifications;
-  final String imageUrl;
+  String id;
+  String username;
+  String password;
+  String email;
+  String name;
+  String surname;
+  String city;
+  String address;
+  int postalCode;
+  String district;
+  String nation;
+  String birthday;
+  String gender;
+  int numEventsCreated;
+  List<String> eventsCreated;
+  List<String> eventsParticipated;
+  List<String> notifications;
+  String imageUrl;
 
   User({
     required this.id,
@@ -57,7 +57,7 @@ class User {
         eventsCreated:
             (snapshot['events_created'] ?? <dynamic>[]).cast<String>(),
         eventsParticipated:
-            (snapshot['events_participated'] ?? <dynamic>[]).cast<String>(),
+            (snapshot['events_partecipated'] ?? <dynamic>[]).cast<String>(),
         notifications:
             (snapshot['notifications'] ?? <dynamic>[]).cast<String>(),
         imageUrl: snapshot['image_url'] ?? "",
@@ -78,6 +78,7 @@ class User {
         "gender": gender,
         "num_events_created": numEventsCreated,
         "events_created": eventsCreated,
+        "events_partecipated": eventsParticipated,
         "notifications": notifications,
         "image_url": imageUrl,
       };

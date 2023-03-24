@@ -18,3 +18,16 @@ class EventBlocStateCreated extends EventBlocState {}
 class EventBlocStateEdited extends EventBlocState {}
 
 class EventBlocStateError extends EventBlocState {}
+
+class EventBlocStatePartecipationAdding extends EventBlocState {}
+
+class EventBlocStatePartecipationAdded extends EventBlocState {}
+
+class EventBlocStatePartecipationRemoving extends EventBlocState {}
+
+class EventBlocStatePartecipationRemoved extends EventBlocState {}
+
+class EventBlocStatePartecipationError extends EventBlocState {
+  final String errorMessage;
+  EventBlocStatePartecipationError(this.errorMessage);
+}

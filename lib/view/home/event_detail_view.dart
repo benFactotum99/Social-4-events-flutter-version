@@ -1,15 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_4_events/bloc/event/event_bloc.dart';
+import 'package:social_4_events/bloc/event/event_bloc_event.dart';
 import 'package:social_4_events/bloc/event/event_bloc_state.dart';
 import 'package:social_4_events/components/custom_button.dart';
 import 'package:social_4_events/components/custom_text_date_form.dart';
 import 'package:social_4_events/components/custom_text_form.dart';
 import 'package:social_4_events/components/custom_text_location.dart';
 import 'package:social_4_events/components/custom_text_time_format.dart';
+import 'package:social_4_events/components/show_my_dialog.dart';
 import 'package:social_4_events/helpers/view_helpers/map_location.dart';
 import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/view/home/event_detail_location_view.dart';
+import 'package:social_4_events/view/main_view.dart';
 
 class EventDetailView extends StatefulWidget {
   final Event event;
@@ -29,6 +34,7 @@ class _EventDetailViewState extends State<EventDetailView> {
   TextEditingController startTimeTextController = TextEditingController();
   TextEditingController endDateTextController = TextEditingController();
   TextEditingController endTimeTextController = TextEditingController();
+  bool userLoggedParticipate = false;
   @override
   void initState() {
     super.initState();
@@ -43,13 +49,26 @@ class _EventDetailViewState extends State<EventDetailView> {
       startTimeTextController.text = widget.event.timeStart;
       endDateTextController.text = widget.event.end;
       endTimeTextController.text = widget.event.timeEnd;
+      userLoggedParticipate = widget.event.usersPartecipants
+          .contains(FirebaseAuth.instance.currentUser!.uid);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<EventBloc, EventBlocState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is EventBlocStatePartecipationAdded ||
+            state is EventBlocStatePartecipationRemoved) {
+          Navigator.of(context, rootNavigator: true).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => MainView(),
+            ),
+          );
+        } else if (state is EventBlocStatePartecipationError) {
+          ShowMyDialog(context, "Errore", state.errorMessage);
+        }
+      },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.red,
@@ -230,13 +249,21 @@ class _EventDetailViewState extends State<EventDetailView> {
   saveButtonSection() => BlocBuilder<EventBloc, EventBlocState>(
         builder: (context, state) {
           return CustomButton(
-            text: 'Partecipa',
+            text: !userLoggedParticipate ? 'Partecipa' : 'Non parecipare più',
             colorButton: Colors.red,
             colorText: Colors.white,
             heightButton: 50,
             widthButton: 500,
-            isLoading: state is EventBlocStateCreating,
-            onPressed: () {},
+            isLoading: !userLoggedParticipate
+                ? state is EventBlocStatePartecipationAdding
+                : state is EventBlocStatePartecipationRemoving,
+            onPressed: () {
+              !userLoggedParticipate
+                  ? BlocProvider.of<EventBloc>(context)
+                      .add(EventBlocEventAddPartecipation(widget.event))
+                  : BlocProvider.of<EventBloc>(context)
+                      .add(EventBlocEventRemovePartecipation(widget.event));
+            },
           );
         },
       );

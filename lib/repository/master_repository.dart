@@ -12,7 +12,7 @@ abstract class MasterRepository {
   })  : _firebaseAuth = firebaseAuth,
         _firebaseFirestore = firebaseFirestore;
 
-  Future<model.User> getUserLoggedById() async {
+  Future<model.User> getUserLogged() async {
     DocumentSnapshot documentSnapshot = await _firebaseFirestore
         .collection('users')
         .doc(_firebaseAuth.currentUser!.uid)
@@ -42,5 +42,20 @@ abstract class MasterRepository {
     });
 
     return events;
+  }
+
+  Future<void> BatchUpdate(Event event, model.User user) async {
+    CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    CollectionReference eventsCollection =
+        FirebaseFirestore.instance.collection('events');
+
+    WriteBatch batch = _firebaseFirestore.batch();
+    batch.update(usersCollection.doc(user.id),
+        {"events_partecipated": user.eventsParticipated});
+    batch.update(eventsCollection.doc(event.id),
+        {"users_partecipants": event.usersPartecipants});
+
+    await batch.commit();
   }
 }
