@@ -53,14 +53,14 @@ class _EventDetailLocationViewState extends State<EventDetailLocationView> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.red,
-        iconTheme: IconThemeData(color: Colors.white),
-        elevation: 0,
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.red),
+        elevation: 1,
         centerTitle: false,
         title: Text(
           "Località",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.red,
           ),
         ),
       ),

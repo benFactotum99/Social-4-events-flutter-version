@@ -11,7 +11,7 @@ class _SearchViewState extends State<SearchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         backgroundColor: Colors.red,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
@@ -22,7 +22,7 @@ class _SearchViewState extends State<SearchView> {
             color: Colors.white,
           ),
         ),
-      ),
+      ),*/
       body: Center(),
     );
   }

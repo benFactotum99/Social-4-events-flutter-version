@@ -42,15 +42,15 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               SliverAppBar(
-                backgroundColor: Colors.red,
-                iconTheme: IconThemeData(color: Colors.black),
+                backgroundColor: Colors.white,
+                iconTheme: IconThemeData(color: Colors.red),
                 elevation: 0,
                 centerTitle: false,
                 pinned: true,
                 title: Text(
                   "Benny",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.red,
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
                   ),
@@ -69,7 +69,7 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
                   ),
                 ],
               ),
-              SliverToBoxAdapter(child: SizedBox(height: 35)),
+              SliverToBoxAdapter(child: SizedBox(height: 25)),
               imageEventSection(),
               SliverToBoxAdapter(child: SizedBox(height: 25)),
               SliverToBoxAdapter(

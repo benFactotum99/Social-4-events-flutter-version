@@ -71,14 +71,14 @@ class _EventDetailViewState extends State<EventDetailView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.red,
-          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(color: Colors.red),
           elevation: 0,
           centerTitle: false,
           title: const Text(
             "Evento",
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.red,
             ),
           ),
         ),
@@ -87,7 +87,7 @@ class _EventDetailViewState extends State<EventDetailView> {
             SliverToBoxAdapter(
               child: Padding(
                 padding:
-                    EdgeInsets.only(top: 30, left: 45, right: 45, bottom: 30),
+                    EdgeInsets.only(top: 20, left: 45, right: 45, bottom: 30),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,

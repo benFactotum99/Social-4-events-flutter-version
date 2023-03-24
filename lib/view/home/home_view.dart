@@ -44,7 +44,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         /*bottom: PreferredSize(
           preferredSize: const Size.fromHeight(0.0),
@@ -53,14 +53,14 @@ class _HomeViewState extends State<HomeView> {
             height: 0.5,
           ),
         ),*/
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 1,
         centerTitle: false,
         title: Text(
           "Social4Events",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.red,
             fontWeight: FontWeight.bold,
             fontSize: 25,
           ),
@@ -69,7 +69,7 @@ class _HomeViewState extends State<HomeView> {
           IconButton(
             icon: Icon(
               Icons.add_box_outlined,
-              color: Colors.white,
+              color: Colors.red,
             ),
             onPressed: () {
               Navigator.of(context).push(

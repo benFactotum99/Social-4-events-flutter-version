@@ -58,14 +58,14 @@ class _AddEventViewState extends State<AddEventView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.red,
-          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(color: Colors.red),
           elevation: 0,
           centerTitle: false,
           title: const Text(
             "Nuovo Evento",
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.red,
             ),
           ),
         ),
@@ -74,7 +74,7 @@ class _AddEventViewState extends State<AddEventView> {
             SliverToBoxAdapter(
               child: Padding(
                 padding:
-                    EdgeInsets.only(top: 30, left: 45, right: 45, bottom: 30),
+                    EdgeInsets.only(top: 20, left: 45, right: 45, bottom: 30),
                 child: Form(
                   key: formKey,
                   child: Column(
