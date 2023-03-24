@@ -13,7 +13,18 @@ class UserView extends StatefulWidget {
   State<UserView> createState() => _UserViewState();
 }
 
-class _UserViewState extends State<UserView> {
+class _UserViewState extends State<UserView> with TickerProviderStateMixin {
+  late TabController _tabController;
+
+  Color colors = Colors.red;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationBloc, AuthenticationBlocState>(
@@ -27,89 +38,165 @@ class _UserViewState extends State<UserView> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.red,
-          iconTheme: IconThemeData(color: Colors.black),
-          elevation: 0,
-          centerTitle: false,
-          title: Text(
-            "User",
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                BlocProvider.of<AuthenticationBloc>(context).add(
-                  AuthenticationBlocEventLogout(),
-                );
-              },
-              icon: Icon(
-                Icons.logout,
-                color: Colors.white,
+        body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                backgroundColor: Colors.red,
+                iconTheme: IconThemeData(color: Colors.black),
+                elevation: 0,
+                centerTitle: false,
+                pinned: true,
+                title: Text(
+                  "Benny",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
+                ),
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      BlocProvider.of<AuthenticationBloc>(context).add(
+                        AuthenticationBlocEventLogout(),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.logout,
+                      color: Colors.red,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-        body: Center(
-          child: Column(
-            children: [
-              SizedBox(height: 35),
+              SliverToBoxAdapter(child: SizedBox(height: 35)),
               imageEventSection(),
-              SizedBox(height: 25),
-              Text("Nome Utente", style: TextStyle(fontSize: 18)),
-              SizedBox(height: 10),
-              Text("Genere", style: TextStyle(fontSize: 18)),
-              SizedBox(height: 10),
-              Text("Nazione", style: TextStyle(fontSize: 18)),
-              SizedBox(height: 20),
-              SizedBox(
-                height: 40,
-                width: 300,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Info utente'),
+              SliverToBoxAdapter(child: SizedBox(height: 25)),
+              SliverToBoxAdapter(
+                child: Center(
+                  child: Text(
+                    "Nome Utente",
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
               ),
-              Expanded(
-                child: GridView.count(
-                  crossAxisCount: 3,
-                  children: List.generate(
-                    6,
-                    (index) => Container(
-                      decoration: BoxDecoration(
+              SliverToBoxAdapter(child: SizedBox(height: 10)),
+              SliverToBoxAdapter(
+                child: Center(
+                  child: Text(
+                    "Genere",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 10)),
+              SliverToBoxAdapter(
+                child: Center(
+                  child: Text(
+                    "Nazione",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 20)),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: SizedBox(
+                    height: 40,
+                    width: 300,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          colors = Colors.white;
+                        });
+                      },
+                      child: Text('Info utente'),
+                    ),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 20)),
+              SliverPersistentHeader(
+                delegate: _MyTabBar(
+                  TabBar(
+                    onTap: (int? value) {
+                      setState(() {
+                        _tabController.index = value!;
+                        print(value);
+                        colors = Colors.white;
+                      });
+                    },
+                    controller: _tabController,
+                    indicatorColor: Colors.red,
+                    labelColor: Colors.red,
+                    unselectedLabelColor: Colors.grey,
+                    tabs: [
+                      Tab(
+                        icon: Icon(
+                          Icons.article,
+                        ),
+                      ),
+                      Tab(
+                        icon: Icon(
+                          Icons.group,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                pinned: true,
+                floating: false,
+              ),
+            ];
+          },
+          body: TabBarView(
+            controller: _tabController,
+            children: [
+              GridView.count(
+                padding: EdgeInsets.zero,
+                crossAxisCount: 3,
+                shrinkWrap: true,
+                children: List.generate(
+                  100,
+                  (index) => Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
                         color: Colors.white,
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 0.5,
-                        ),
-                        image: DecorationImage(
-                          image: NetworkImage(
-                              "https://firebasestorage.googleapis.com/v0/b/social4events-3a697.appspot.com/o/events%2F1K3qgTLcZ25JX7CQr9ER?alt=media&token=314fbbee-4e6e-4f14-a394-70c04c5f7430"),
-                          fit: BoxFit.cover,
-                        ),
+                        width: 0.5,
+                      ),
+                      image: DecorationImage(
+                        image: NetworkImage(
+                            "https://firebasestorage.googleapis.com/v0/b/social4events-3a697.appspot.com/o/events%2F1K3qgTLcZ25JX7CQr9ER?alt=media&token=314fbbee-4e6e-4f14-a394-70c04c5f7430"),
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
                 ),
               ),
-              /*Expanded(
-                child: GridView.count(
-                  crossAxisCount: 3,
-                  children: List.generate(
-                    9,
-                    (index) => Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/post_$index.jpg'),
-                          fit: BoxFit.cover,
-                        ),
+              GridView.count(
+                padding: EdgeInsets.zero,
+                crossAxisCount: 3,
+                shrinkWrap: true,
+                children: List.generate(
+                  100,
+                  (index) => Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 0.5,
+                      ),
+                      image: DecorationImage(
+                        image: NetworkImage(
+                            "https://firebasestorage.googleapis.com/v0/b/social4events-3a697.appspot.com/o/events%2F1K3qgTLcZ25JX7CQr9ER?alt=media&token=314fbbee-4e6e-4f14-a394-70c04c5f7430"),
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
                 ),
-              ),*/
+              ),
             ],
           ),
         ),
@@ -117,16 +204,44 @@ class _UserViewState extends State<UserView> {
     );
   }
 
-  imageEventSection() => InkWell(
-        onTap: () {},
-        child: CircleAvatar(
-          radius: 100.0,
-          backgroundColor: Colors.grey,
-          foregroundColor: Colors.white,
-          child: Transform.scale(
-            scale: 5,
-            child: Icon(Icons.account_box_rounded),
+  imageEventSection() => SliverToBoxAdapter(
+        child: InkWell(
+          onTap: () {},
+          child: CircleAvatar(
+            radius: 100.0,
+            backgroundColor: Colors.grey,
+            foregroundColor: Colors.white,
+            child: Transform.scale(
+              scale: 5,
+              child: Icon(Icons.account_box_rounded),
+            ),
           ),
         ),
       );
+}
+
+class _MyTabBar extends SliverPersistentHeaderDelegate {
+  _MyTabBar(this._tabBar);
+
+  final TabBar _tabBar;
+
+  @override
+  double get minExtent => _tabBar.preferredSize.height;
+  @override
+  double get maxExtent => _tabBar.preferredSize.height;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      //height: 20,
+      color: Colors.white,
+      child: _tabBar,
+    );
+  }
+
+  @override
+  bool shouldRebuild(_MyTabBar oldDelegate) {
+    return false;
+  }
 }
