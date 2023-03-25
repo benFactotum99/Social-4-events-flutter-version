@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:social_4_events/exceptions/user_exception.dart';
 import 'package:social_4_events/model/event.dart';
+import 'package:social_4_events/model/user.dart' as model;
 import 'package:social_4_events/repository/master_repository.dart';
 import 'package:social_4_events/repository/user_repository.dart';
 
@@ -44,5 +45,27 @@ class EventRepository extends MasterRepository {
     user.eventsParticipated.remove(event.id);
     event.usersPartecipants.remove(user.id);
     await super.BatchUpdate(event, user);
+  }
+
+  Future<List<Event>> getEventsByIds(List<String> ids) async {
+    List<Event> events = List.empty(growable: true);
+    for (String id in ids) {
+      var event = await this.getEventById(id);
+      events.add(event);
+    }
+    return events;
+  }
+
+  Future<Event> getEventById(String id) async {
+    DocumentSnapshot documentSnapshot =
+        await _firebaseFirestore.collection('events').doc(id).get();
+
+    if (documentSnapshot.exists) {
+      var eventMap = documentSnapshot.data() as Map<String, dynamic>;
+      var event = Event.fromSnapshot(id, eventMap);
+      return event;
+    } else {
+      throw Exception("Evento non trovato");
+    }
   }
 }

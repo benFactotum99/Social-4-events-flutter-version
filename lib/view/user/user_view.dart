@@ -16,11 +16,8 @@ class UserView extends StatefulWidget {
 class _UserViewState extends State<UserView> with TickerProviderStateMixin {
   late TabController _tabController;
 
-  Color colors = Colors.red;
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
   }
@@ -106,11 +103,7 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
                     height: 40,
                     width: 300,
                     child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          colors = Colors.white;
-                        });
-                      },
+                      onPressed: () {},
                       child: Text('Info utente'),
                     ),
                   ),
@@ -120,13 +113,6 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
               SliverPersistentHeader(
                 delegate: _MyTabBar(
                   TabBar(
-                    onTap: (int? value) {
-                      setState(() {
-                        _tabController.index = value!;
-                        print(value);
-                        colors = Colors.white;
-                      });
-                    },
                     controller: _tabController,
                     indicatorColor: Colors.red,
                     labelColor: Colors.red,
@@ -153,50 +139,8 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
           body: TabBarView(
             controller: _tabController,
             children: [
-              GridView.count(
-                padding: EdgeInsets.zero,
-                crossAxisCount: 3,
-                shrinkWrap: true,
-                children: List.generate(
-                  100,
-                  (index) => Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 0.5,
-                      ),
-                      image: DecorationImage(
-                        image: NetworkImage(
-                            "https://firebasestorage.googleapis.com/v0/b/social4events-3a697.appspot.com/o/events%2F1K3qgTLcZ25JX7CQr9ER?alt=media&token=314fbbee-4e6e-4f14-a394-70c04c5f7430"),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              GridView.count(
-                padding: EdgeInsets.zero,
-                crossAxisCount: 3,
-                shrinkWrap: true,
-                children: List.generate(
-                  100,
-                  (index) => Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 0.5,
-                      ),
-                      image: DecorationImage(
-                        image: NetworkImage(
-                            "https://firebasestorage.googleapis.com/v0/b/social4events-3a697.appspot.com/o/events%2F1K3qgTLcZ25JX7CQr9ER?alt=media&token=314fbbee-4e6e-4f14-a394-70c04c5f7430"),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              eventsCreated(),
+              eventsPartecipated(),
             ],
           ),
         ),
@@ -214,6 +158,52 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
             child: Transform.scale(
               scale: 5,
               child: Icon(Icons.account_box_rounded),
+            ),
+          ),
+        ),
+      );
+
+  eventsCreated() => GridView.count(
+        padding: EdgeInsets.zero,
+        crossAxisCount: 3,
+        shrinkWrap: true,
+        children: List.generate(
+          100,
+          (index) => Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                color: Colors.white,
+                width: 0.5,
+              ),
+              image: DecorationImage(
+                image: NetworkImage(
+                    "https://firebasestorage.googleapis.com/v0/b/social4events-3a697.appspot.com/o/events%2F1K3qgTLcZ25JX7CQr9ER?alt=media&token=314fbbee-4e6e-4f14-a394-70c04c5f7430"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+      );
+
+  eventsPartecipated() => GridView.count(
+        padding: EdgeInsets.zero,
+        crossAxisCount: 3,
+        shrinkWrap: true,
+        children: List.generate(
+          100,
+          (index) => Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                color: Colors.white,
+                width: 0.5,
+              ),
+              image: DecorationImage(
+                image: NetworkImage(
+                    "https://firebasestorage.googleapis.com/v0/b/social4events-3a697.appspot.com/o/events%2F1K3qgTLcZ25JX7CQr9ER?alt=media&token=314fbbee-4e6e-4f14-a394-70c04c5f7430"),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),

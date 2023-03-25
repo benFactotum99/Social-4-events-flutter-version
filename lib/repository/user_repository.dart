@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:social_4_events/exceptions/user_exception.dart';
+import 'package:social_4_events/model/user.dart' as model;
+import 'package:social_4_events/repository/master_repository.dart';
 
-class UserRepository {
+class UserRepository extends MasterRepository {
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firebaseFirestore;
 
@@ -10,7 +12,8 @@ class UserRepository {
     required FirebaseAuth firebaseAuth,
     required FirebaseFirestore firebaseFirestore,
   })  : _firebaseAuth = firebaseAuth,
-        _firebaseFirestore = firebaseFirestore;
+        _firebaseFirestore = firebaseFirestore,
+        super(firebaseAuth: firebaseAuth, firebaseFirestore: firebaseFirestore);
 
   Future<void> login(String email, String password) async {
     await _firebaseAuth.signInWithEmailAndPassword(
@@ -36,5 +39,9 @@ class UserRepository {
     } else {
       throw UserException("Utente non loggato");
     }
+  }
+
+  Future<model.User> getUserLogged() async {
+    return await super.getUserLogged();
   }
 }
