@@ -44,4 +44,18 @@ class UserRepository extends MasterRepository {
   Future<model.User> getUserLogged() async {
     return await super.getUserLogged();
   }
+
+  Future<model.User> getUserById(String userId) async {
+    DocumentSnapshot documentSnapshot =
+        await _firebaseFirestore.collection('users').doc(userId).get();
+
+    if (documentSnapshot.exists) {
+      var userMap = documentSnapshot.data() as Map<String, dynamic>;
+      var user =
+          model.User.fromSnapshot(_firebaseAuth.currentUser!.uid, userMap);
+      return user;
+    } else {
+      throw Exception("Utente non trovato");
+    }
+  }
 }

@@ -14,7 +14,7 @@ import 'package:social_4_events/view/home/event_detail_view.dart';
 import 'package:social_4_events/view/login/login_view.dart';
 
 class UserView extends StatefulWidget {
-  const UserView({super.key});
+  const UserView();
 
   @override
   State<UserView> createState() => _UserViewState();
@@ -27,6 +27,7 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+
     BlocProvider.of<UserBloc>(context).add(UserBlocEventUserLoggedFetch());
   }
 
@@ -188,12 +189,10 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
                   ],
                 ),
               );
-            } else if (state is UserBlocStateUserLoggedLoading) {
-              return Center(child: CircularProgressIndicator());
             } else if (state is UserBlocStateUserLoggedError) {
               return Center(child: Text(state.errorMessage));
             } else {
-              return Center(child: Text("Errore generico."));
+              return Center(child: CircularProgressIndicator());
             }
           },
         ),

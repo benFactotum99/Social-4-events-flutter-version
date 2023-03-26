@@ -1,39 +1,29 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_4_events/bloc/user/user_bloc_event.dart';
 import 'package:social_4_events/bloc/user/user_bloc_state.dart';
+import 'package:social_4_events/bloc/user_generic/user_generic_bloc_event.dart';
+import 'package:social_4_events/bloc/user_generic/user_generic_bloc_state.dart';
 import 'package:social_4_events/repository/event_repository.dart';
 import 'package:social_4_events/repository/user_repository.dart';
 
-class UserBloc extends Bloc<UserBlocEvent, UserBlocState> {
+class UserGenericBloc extends Bloc<UserGenericBlocEvent, UserGenericBlocState> {
   final EventRepository eventRepository;
   final UserRepository userRepository;
 
-  UserBloc({required this.eventRepository, required this.userRepository})
-      : super(UserBlocStateUserLoggedLoading()) {
-    on<UserBlocEventFetch>(
+  UserGenericBloc({required this.eventRepository, required this.userRepository})
+      : super(UserGenericBlocStateLoading()) {
+    on<UserGenericBlocEventFetchUserById>(
       (event, emit) async {
         try {
-          emit(UserBlocStateLoading());
-          var users = await userRepository.getUsers();
-          emit(UserBlocStateLoaded(users));
-        } catch (error) {
-          print(error);
-          emit(UserBlocStateError());
-        }
-      },
-    );
-    on<UserBlocEventUserLoggedFetch>(
-      (event, emit) async {
-        try {
-          emit(UserBlocStateUserLoggedLoading());
+          emit(UserGenericBlocStateLoading());
 
-          var user = await userRepository.getUserLogged();
+          var user = await userRepository.getUserById(event.userId);
           var eventsCreated =
               await eventRepository.getEventsByIds(user.eventsCreated);
           var eventsPartecipated =
               await eventRepository.getEventsByIds(user.eventsParticipated);
           emit(
-            UserBlocStateUserLoggedLoaded(
+            UserGenericBlocStateLoaded(
               user,
               eventsCreated,
               eventsPartecipated,
@@ -42,8 +32,7 @@ class UserBloc extends Bloc<UserBlocEvent, UserBlocState> {
         } catch (error) {
           print(error);
           emit(
-            UserBlocStateUserLoggedError(
-                "Errore nel caricamento dell'utente loggato"),
+            UserGenericBlocStateError("Errore nel caricamento dell'utente"),
           );
         }
       },

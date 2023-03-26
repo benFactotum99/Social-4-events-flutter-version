@@ -10,6 +10,7 @@ import 'package:social_4_events/bloc/authentication/authentication_bloc_event.da
 import 'package:social_4_events/bloc/authentication/authentication_bloc_state.dart';
 import 'package:social_4_events/bloc/event/event_bloc.dart';
 import 'package:social_4_events/bloc/user/user_bloc.dart';
+import 'package:social_4_events/bloc/user_generic/user_generic_bloc.dart';
 import 'package:social_4_events/components/circle_image.dart';
 import 'package:social_4_events/repository/event_repository.dart';
 import 'package:social_4_events/repository/user_repository.dart';
@@ -46,6 +47,19 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => UserBloc(
+            eventRepository: EventRepository(
+              firebaseAuth: FirebaseAuth.instance,
+              firebaseStorage: FirebaseStorage.instance,
+              firebaseFirestore: FirebaseFirestore.instance,
+            ),
+            userRepository: UserRepository(
+              firebaseAuth: FirebaseAuth.instance,
+              firebaseFirestore: FirebaseFirestore.instance,
+            ),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => UserGenericBloc(
             eventRepository: EventRepository(
               firebaseAuth: FirebaseAuth.instance,
               firebaseStorage: FirebaseStorage.instance,

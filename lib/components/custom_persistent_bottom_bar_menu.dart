@@ -41,6 +41,7 @@ class _PersistentBottomBarScaffoldState
               .map((page) => Navigator(
                     /// Each tab is wrapped in a Navigator so that naigation in
                     /// one tab can be independent of the other tabs
+                    /// //TODO: qui possiamo inserire le routes forse
                     key: page.navigatorkey,
                     onGenerateInitialRoutes: (navigator, initialRoute) {
                       return [
