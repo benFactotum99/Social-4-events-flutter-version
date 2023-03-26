@@ -3,6 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_4_events/bloc/authentication/authentication_bloc.dart';
 import 'package:social_4_events/bloc/authentication/authentication_bloc_event.dart';
 import 'package:social_4_events/bloc/authentication/authentication_bloc_state.dart';
+import 'package:social_4_events/bloc/event/event_bloc_event.dart';
+import 'package:social_4_events/bloc/user/user_bloc.dart';
+import 'package:social_4_events/bloc/user/user_bloc_event.dart';
+import 'package:social_4_events/bloc/user/user_bloc_state.dart';
+import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/view/app.dart';
 import 'package:social_4_events/view/login/login_view.dart';
 
@@ -20,6 +25,7 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    BlocProvider.of<UserBloc>(context).add(UserBlocEventUserLoggedFetch());
   }
 
   @override
@@ -35,114 +41,130 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
         }
       },
       child: Scaffold(
-        body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                backgroundColor: Colors.white,
-                iconTheme: IconThemeData(color: Colors.red),
-                elevation: 0,
-                centerTitle: false,
-                pinned: true,
-                title: Text(
-                  "Benny",
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
-                ),
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      BlocProvider.of<AuthenticationBloc>(context).add(
-                        AuthenticationBlocEventLogout(),
-                      );
-                    },
-                    icon: Icon(
-                      Icons.logout,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 25)),
-              imageEventSection(),
-              SliverToBoxAdapter(child: SizedBox(height: 25)),
-              SliverToBoxAdapter(
-                child: Center(
-                  child: Text(
-                    "Nome Utente",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 10)),
-              SliverToBoxAdapter(
-                child: Center(
-                  child: Text(
-                    "Genere",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 10)),
-              SliverToBoxAdapter(
-                child: Center(
-                  child: Text(
-                    "Nazione",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 20)),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: SizedBox(
-                    height: 40,
-                    width: 300,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text('Info utente'),
-                    ),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 20)),
-              SliverPersistentHeader(
-                delegate: _MyTabBar(
-                  TabBar(
-                    controller: _tabController,
-                    indicatorColor: Colors.red,
-                    labelColor: Colors.red,
-                    unselectedLabelColor: Colors.grey,
-                    tabs: [
-                      Tab(
-                        icon: Icon(
-                          Icons.article,
+        body: BlocBuilder<UserBloc, UserBlocState>(
+          builder: (context, state) {
+            if (state is UserBlocStateUserLoggedLoaded) {
+              var user = state.user;
+              var eventsCreated = state.eventsCreated;
+              var eventsPartecipated = state.eventsPartecipated;
+              return NestedScrollView(
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return [
+                    SliverAppBar(
+                      backgroundColor: Colors.white,
+                      iconTheme: IconThemeData(color: Colors.red),
+                      elevation: 0,
+                      centerTitle: false,
+                      pinned: true,
+                      title: Text(
+                        user.username,
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
                         ),
                       ),
-                      Tab(
-                        icon: Icon(
-                          Icons.group,
+                      actions: [
+                        IconButton(
+                          onPressed: () {
+                            BlocProvider.of<AuthenticationBloc>(context).add(
+                              AuthenticationBlocEventLogout(),
+                            );
+                          },
+                          icon: Icon(
+                            Icons.logout,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SliverToBoxAdapter(child: SizedBox(height: 25)),
+                    imageEventSection(),
+                    SliverToBoxAdapter(child: SizedBox(height: 25)),
+                    SliverToBoxAdapter(
+                      child: Center(
+                        child: Text(
+                          user.name,
+                          style: TextStyle(fontSize: 18),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    SliverToBoxAdapter(child: SizedBox(height: 10)),
+                    SliverToBoxAdapter(
+                      child: Center(
+                        child: Text(
+                          user.gender,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                    SliverToBoxAdapter(child: SizedBox(height: 10)),
+                    SliverToBoxAdapter(
+                      child: Center(
+                        child: Text(
+                          user.nation,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                    SliverToBoxAdapter(child: SizedBox(height: 20)),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                        child: SizedBox(
+                          height: 40,
+                          width: 300,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: Text('Info utente'),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SliverToBoxAdapter(child: SizedBox(height: 20)),
+                    SliverPersistentHeader(
+                      delegate: _MyTabBar(
+                        TabBar(
+                          controller: _tabController,
+                          indicatorColor: Colors.red,
+                          labelColor: Colors.red,
+                          unselectedLabelColor: Colors.grey,
+                          tabs: [
+                            Tab(
+                              icon: Icon(
+                                Icons.article,
+                              ),
+                            ),
+                            Tab(
+                              icon: Icon(
+                                Icons.group,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      pinned: true,
+                      floating: false,
+                    ),
+                  ];
+                },
+                body: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    eventsCreatedGridSection(eventsCreated),
+                    eventsPartecipatedGridSection(eventsPartecipated),
+                  ],
                 ),
-                pinned: true,
-                floating: false,
-              ),
-            ];
+              );
+            } else if (state is UserBlocStateUserLoggedLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is UserBlocStateUserLoggedError) {
+              return Center(child: Text(state.errorMessage));
+            } else {
+              return Center(child: Text("Errore generico."));
+            }
           },
-          body: TabBarView(
-            controller: _tabController,
-            children: [
-              eventsCreated(),
-              eventsPartecipated(),
-            ],
-          ),
         ),
       ),
     );
@@ -163,12 +185,12 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
         ),
       );
 
-  eventsCreated() => GridView.count(
+  eventsCreatedGridSection(List<Event> eventsCreated) => GridView.count(
         padding: EdgeInsets.zero,
         crossAxisCount: 3,
         shrinkWrap: true,
         children: List.generate(
-          100,
+          eventsCreated.length,
           (index) => Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -186,12 +208,13 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
         ),
       );
 
-  eventsPartecipated() => GridView.count(
+  eventsPartecipatedGridSection(List<Event> eventsPartecipated) =>
+      GridView.count(
         padding: EdgeInsets.zero,
         crossAxisCount: 3,
         shrinkWrap: true,
         children: List.generate(
-          100,
+          eventsPartecipated.length,
           (index) => Container(
             decoration: BoxDecoration(
               color: Colors.white,
