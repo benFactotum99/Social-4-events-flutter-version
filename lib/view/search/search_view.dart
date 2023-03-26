@@ -8,22 +8,39 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchViewState extends State<SearchView> {
+  TextEditingController searchTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        backgroundColor: Colors.red,
-        iconTheme: IconThemeData(color: Colors.black),
-        elevation: 0,
-        centerTitle: false,
-        title: Text(
-          "Cerca",
-          style: TextStyle(
-            color: Colors.white,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 60, 10, 0),
+          child: Column(
+            children: [
+              Container(
+                height: 41,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextField(
+                  onChanged: (String value) {
+                    print(value);
+                  },
+                  controller: searchTextController,
+                  decoration: InputDecoration(
+                    hintText: 'Cerca',
+                    prefixIcon: Icon(Icons.search),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.all(8),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
-      ),*/
-      body: Center(),
+      ),
     );
   }
 }

@@ -35,9 +35,6 @@ class _LoginViewState extends State<LoginView> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Social4Events"),
-        ),
         body: Center(
           child: Padding(
             padding:
@@ -48,10 +45,12 @@ class _LoginViewState extends State<LoginView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  appTextSection(),
+                  const SizedBox(height: 40),
                   emalTextFormSection(),
                   const SizedBox(height: 20),
                   passwordTextFormSection(),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
                   buttonLoginSection(),
                 ],
               ),
@@ -165,4 +164,13 @@ class _LoginViewState extends State<LoginView> {
           },
         );
       });
+
+  appTextSection() => Text(
+        "Social4Events",
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
+      );
 }

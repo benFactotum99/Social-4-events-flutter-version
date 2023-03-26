@@ -8,7 +8,9 @@ import 'package:social_4_events/bloc/user/user_bloc.dart';
 import 'package:social_4_events/bloc/user/user_bloc_event.dart';
 import 'package:social_4_events/bloc/user/user_bloc_state.dart';
 import 'package:social_4_events/model/event.dart';
+import 'package:social_4_events/view/add/add_event_view.dart';
 import 'package:social_4_events/view/app.dart';
+import 'package:social_4_events/view/home/event_detail_view.dart';
 import 'package:social_4_events/view/login/login_view.dart';
 
 class UserView extends StatefulWidget {
@@ -58,7 +60,7 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
                       centerTitle: false,
                       pinned: true,
                       title: Text(
-                        user.username,
+                        "🔒 ${user.username}",
                         style: TextStyle(
                           color: Colors.red,
                           fontWeight: FontWeight.bold,
@@ -66,6 +68,19 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
                         ),
                       ),
                       actions: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.add_box_outlined,
+                            color: Colors.red,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => AddEventView(),
+                              ),
+                            );
+                          },
+                        ),
                         IconButton(
                           onPressed: () {
                             BlocProvider.of<AuthenticationBloc>(context).add(
@@ -80,12 +95,20 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
                       ],
                     ),
                     SliverToBoxAdapter(child: SizedBox(height: 25)),
-                    imageEventSection(),
+                    imageEventSection(user.imageUrl),
                     SliverToBoxAdapter(child: SizedBox(height: 25)),
                     SliverToBoxAdapter(
                       child: Center(
                         child: Text(
-                          user.name,
+                          "${user.name} ${user.surname}",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Center(
+                        child: Text(
+                          "${user.email}",
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
@@ -94,7 +117,7 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
                     SliverToBoxAdapter(
                       child: Center(
                         child: Text(
-                          user.gender,
+                          "${user.gender}, ${user.birthday}",
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
@@ -103,13 +126,21 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
                     SliverToBoxAdapter(
                       child: Center(
                         child: Text(
-                          user.nation,
+                          "${user.address}, ${user.district}, ${user.postalCode}",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Center(
+                        child: Text(
+                          "${user.city}, ${user.nation}",
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
                     ),
                     SliverToBoxAdapter(child: SizedBox(height: 20)),
-                    SliverToBoxAdapter(
+                    /*SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                         child: SizedBox(
@@ -121,8 +152,8 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-                    ),
-                    SliverToBoxAdapter(child: SizedBox(height: 20)),
+                    ),*/
+                    //SliverToBoxAdapter(child: SizedBox(height: 20)),
                     SliverPersistentHeader(
                       delegate: _MyTabBar(
                         TabBar(
@@ -170,17 +201,24 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
     );
   }
 
-  imageEventSection() => SliverToBoxAdapter(
+  imageEventSection(String imageUrl) => SliverToBoxAdapter(
         child: InkWell(
           onTap: () {},
           child: CircleAvatar(
-            radius: 100.0,
+            radius: 110.0,
             backgroundColor: Colors.grey,
             foregroundColor: Colors.white,
-            child: Transform.scale(
-              scale: 5,
-              child: Icon(Icons.account_box_rounded),
-            ),
+            child: imageUrl.isEmpty
+                ? Transform.scale(
+                    scale: 5, child: Icon(Icons.account_box_rounded))
+                : ClipOval(
+                    child: Image.network(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                      width: 220,
+                      height: 220,
+                    ),
+                  ),
           ),
         ),
       );
@@ -191,17 +229,41 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
         shrinkWrap: true,
         children: List.generate(
           eventsCreated.length,
-          (index) => Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
+          (index) => InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => EventDetailView(
+                    event: eventsCreated[index],
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              child: eventsCreated[index].imageUrl.isEmpty
+                  ? Container(
+                      color: Colors.grey,
+                      child: Transform.scale(
+                        scale: 3,
+                        child: Icon(
+                          Icons.event,
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                  : null,
+              decoration: BoxDecoration(
                 color: Colors.white,
-                width: 0.5,
-              ),
-              image: DecorationImage(
-                image: NetworkImage(
-                    "https://firebasestorage.googleapis.com/v0/b/social4events-3a697.appspot.com/o/events%2F1K3qgTLcZ25JX7CQr9ER?alt=media&token=314fbbee-4e6e-4f14-a394-70c04c5f7430"),
-                fit: BoxFit.cover,
+                border: Border.all(
+                  color: Colors.white,
+                  width: 0.5,
+                ),
+                image: eventsCreated[index].imageUrl.isEmpty
+                    ? null
+                    : DecorationImage(
+                        image: NetworkImage(eventsCreated[index].imageUrl),
+                        fit: BoxFit.cover,
+                      ),
               ),
             ),
           ),
@@ -215,17 +277,41 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
         shrinkWrap: true,
         children: List.generate(
           eventsPartecipated.length,
-          (index) => Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
+          (index) => InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => EventDetailView(
+                    event: eventsPartecipated[index],
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              child: eventsPartecipated[index].imageUrl.isEmpty
+                  ? Container(
+                      color: Colors.grey,
+                      child: Transform.scale(
+                        scale: 3,
+                        child: Icon(
+                          Icons.event,
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                  : null,
+              decoration: BoxDecoration(
                 color: Colors.white,
-                width: 0.5,
-              ),
-              image: DecorationImage(
-                image: NetworkImage(
-                    "https://firebasestorage.googleapis.com/v0/b/social4events-3a697.appspot.com/o/events%2F1K3qgTLcZ25JX7CQr9ER?alt=media&token=314fbbee-4e6e-4f14-a394-70c04c5f7430"),
-                fit: BoxFit.cover,
+                border: Border.all(
+                  color: Colors.white,
+                  width: 0.5,
+                ),
+                image: eventsPartecipated[index].imageUrl.isEmpty
+                    ? null
+                    : DecorationImage(
+                        image: NetworkImage(eventsPartecipated[index].imageUrl),
+                        fit: BoxFit.cover,
+                      ),
               ),
             ),
           ),

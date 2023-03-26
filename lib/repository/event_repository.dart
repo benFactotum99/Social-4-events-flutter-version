@@ -51,12 +51,12 @@ class EventRepository extends MasterRepository {
     List<Event> events = List.empty(growable: true);
     for (String id in ids) {
       var event = await this.getEventById(id);
-      events.add(event);
+      if (event != null) events.add(event);
     }
     return events;
   }
 
-  Future<Event> getEventById(String id) async {
+  Future<Event?> getEventById(String id) async {
     DocumentSnapshot documentSnapshot =
         await _firebaseFirestore.collection('events').doc(id).get();
 
@@ -65,7 +65,7 @@ class EventRepository extends MasterRepository {
       var event = Event.fromSnapshot(id, eventMap);
       return event;
     } else {
-      throw Exception("Evento non trovato");
+      return null;
     }
   }
 }

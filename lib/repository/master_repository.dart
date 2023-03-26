@@ -44,6 +44,22 @@ abstract class MasterRepository {
     return events;
   }
 
+  Future<List<model.User>> getUsers() async {
+    final CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('users');
+
+    QuerySnapshot querySnapshot = await collectionReference.get();
+
+    List<model.User> users = [];
+    querySnapshot.docs.forEach((documentSnapshot) {
+      model.User customObject = model.User.fromSnapshot(
+          documentSnapshot.id, documentSnapshot.data() as Map<String, dynamic>);
+      users.add(customObject);
+    });
+
+    return users;
+  }
+
   Future<void> BatchUpdate(Event event, model.User user) async {
     CollectionReference usersCollection =
         FirebaseFirestore.instance.collection('users');

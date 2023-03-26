@@ -142,7 +142,7 @@ class _AddEventViewState extends State<AddEventView> {
           child: _image == null
               ? Transform.scale(
                   scale: 5,
-                  child: Icon(Icons.event),
+                  child: Icon(Icons.event, color: Colors.white),
                 )
               : ClipOval(
                   child: Image.file(
