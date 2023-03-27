@@ -37,10 +37,22 @@ class _EventPopUpViewState extends State<EventPopUpView> {
               radius: 70.0,
               backgroundColor: Colors.grey,
               foregroundColor: Colors.white,
-              child: Transform.scale(
-                scale: 4,
-                child: Icon(Icons.event),
-              ),
+              child: widget.event.imageUrl.isEmpty
+                  ? Transform.scale(
+                      scale: 4,
+                      child: Icon(Icons.event),
+                    )
+                  : Transform.scale(
+                      scale: 1,
+                      child: ClipOval(
+                        child: Image.network(
+                          widget.event.imageUrl,
+                          fit: BoxFit.cover,
+                          width: 220,
+                          height: 220,
+                        ),
+                      ),
+                    ),
             ),
             SizedBox(height: 20),
             Text("Name: ${widget.event.name}"),

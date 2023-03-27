@@ -49,6 +49,7 @@ class _CustomTextDateFormState extends State<CustomTextDateForm> {
       },
       child: TextFormField(
         enabled: false,
+        readOnly: true,
         controller: widget.dateController,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: widget.onValidator,
@@ -61,6 +62,8 @@ class _CustomTextDateFormState extends State<CustomTextDateForm> {
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
           //prefixIcon: Icon(Icons.account_circle, size: 30),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
           disabledBorder: OutlineInputBorder(
             borderSide: BorderSide(width: 1, color: Colors.black),
             borderRadius: BorderRadius.all(Radius.circular(10.0)),

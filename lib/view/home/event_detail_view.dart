@@ -129,10 +129,22 @@ class _EventDetailViewState extends State<EventDetailView> {
           radius: 100.0,
           backgroundColor: Colors.grey,
           foregroundColor: Colors.white,
-          child: Transform.scale(
-            scale: 5,
-            child: Icon(Icons.event),
-          ),
+          child: widget.event.imageUrl.isEmpty
+              ? Transform.scale(
+                  scale: 5,
+                  child: Icon(Icons.event),
+                )
+              : Transform.scale(
+                  scale: 1,
+                  child: ClipOval(
+                    child: Image.network(
+                      widget.event.imageUrl,
+                      fit: BoxFit.cover,
+                      width: 220,
+                      height: 220,
+                    ),
+                  ),
+                ),
         ),
       );
 
@@ -142,9 +154,6 @@ class _EventDetailViewState extends State<EventDetailView> {
         readOnly: true,
         enable: false,
         onValidator: (String? value) {
-          if (value == null || value.isEmpty) {
-            return 'Il nome è obbligatorio';
-          }
           return null;
         },
         onChanged: (String? value) {},
@@ -156,9 +165,6 @@ class _EventDetailViewState extends State<EventDetailView> {
         readOnly: true,
         enable: false,
         onValidator: (String? value) {
-          if (value == null || value.isEmpty) {
-            return 'La descrizione è obbligatoria';
-          }
           return null;
         },
         onChanged: (String? value) {},
@@ -171,9 +177,6 @@ class _EventDetailViewState extends State<EventDetailView> {
         readOnly: true,
         enable: false,
         onValidator: (String? value) {
-          if (value == null || value.isEmpty) {
-            return 'Il numero dei partecipanti è obbligatorio';
-          }
           return null;
         },
         onChanged: (String? value) {},
@@ -185,9 +188,6 @@ class _EventDetailViewState extends State<EventDetailView> {
         textController: priceTextController,
         readOnly: true,
         onValidator: (String? value) {
-          if (value == null || value.isEmpty) {
-            return 'Il prezzo è obbligatorio';
-          }
           return null;
         },
         onChanged: (String? value) {},
@@ -196,7 +196,9 @@ class _EventDetailViewState extends State<EventDetailView> {
   locationSection() => CustomTextLocationForm(
         myLabelText: 'Località',
         textController: locationTextController,
-        onValidator: (String? value) {},
+        onValidator: (String? value) {
+          return null;
+        },
         onChanged: (String? value) {},
         readOnly: true,
         onTap: () {
@@ -218,7 +220,9 @@ class _EventDetailViewState extends State<EventDetailView> {
         myLabelText: 'Inizio',
         disableTap: true,
         onChanged: (String? value) {},
-        onValidator: (String? value) {},
+        onValidator: (String? value) {
+          return null;
+        },
         dateController: startDateTextController,
       );
 
@@ -226,7 +230,9 @@ class _EventDetailViewState extends State<EventDetailView> {
         myLabelText: 'Ora inizio',
         disableTap: true,
         onChanged: (String? value) {},
-        onValidator: (String? value) {},
+        onValidator: (String? value) {
+          return null;
+        },
         timeController: startTimeTextController,
       );
 
@@ -234,7 +240,9 @@ class _EventDetailViewState extends State<EventDetailView> {
         myLabelText: 'Fine',
         disableTap: true,
         onChanged: (String? value) {},
-        onValidator: (String? value) {},
+        onValidator: (String? value) {
+          return null;
+        },
         dateController: endDateTextController,
       );
 
@@ -242,7 +250,9 @@ class _EventDetailViewState extends State<EventDetailView> {
         myLabelText: 'Ora fine',
         disableTap: true,
         onChanged: (String? value) {},
-        onValidator: (String? value) {},
+        onValidator: (String? value) {
+          return null;
+        },
         timeController: endTimeTextController,
       );
 

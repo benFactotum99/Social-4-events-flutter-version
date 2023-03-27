@@ -240,9 +240,7 @@ class _AddEventViewState extends State<AddEventView> {
         myLabelText: 'Località',
         textController: locationTextController,
         onValidator: (String? value) {
-          if (value == null || value.isEmpty) {
-            return 'La località è obbligatoria';
-          }
+          return null;
         },
         onChanged: (String? value) {},
         readOnly: true,
@@ -274,9 +272,7 @@ class _AddEventViewState extends State<AddEventView> {
         myLabelText: 'Inizio',
         onChanged: (String? value) {},
         onValidator: (String? value) {
-          if (value == null || value.isEmpty) {
-            return 'La data di inizio è obbligatoria';
-          }
+          return null;
         },
         dateController: startDateTextController,
       );
@@ -285,9 +281,7 @@ class _AddEventViewState extends State<AddEventView> {
         myLabelText: 'Ora inizio',
         onChanged: (String? value) {},
         onValidator: (String? value) {
-          if (value == null || value.isEmpty) {
-            return 'L' 'ora di inizio è obbligatoria';
-          }
+          return null;
         },
         timeController: startTimeTextController,
       );
@@ -296,9 +290,7 @@ class _AddEventViewState extends State<AddEventView> {
         myLabelText: 'Fine',
         onChanged: (String? value) {},
         onValidator: (String? value) {
-          if (value == null || value.isEmpty) {
-            return 'La data di fine è obbligatoria';
-          }
+          return null;
         },
         dateController: endDateTextController,
       );
@@ -307,9 +299,7 @@ class _AddEventViewState extends State<AddEventView> {
         myLabelText: 'Ora fine',
         onChanged: (String? value) {},
         onValidator: (String? value) {
-          if (value == null || value.isEmpty) {
-            return 'L' 'ora di fine è obbligatoria';
-          }
+          return null;
         },
         timeController: endTimeTextController,
       );
@@ -324,6 +314,36 @@ class _AddEventViewState extends State<AddEventView> {
             widthButton: 500,
             isLoading: state is EventBlocStateCreating,
             onPressed: () {
+              if (_image == null) {
+                ShowMyDialog(context, "Errore", "L'immagine è obbligatoria.");
+                return;
+              }
+
+              if (locationTextController.text.isEmpty) {
+                ShowMyDialog(context, "Errore", "Location mancante.");
+                return;
+              }
+
+              if (startDateTextController.text.isEmpty) {
+                ShowMyDialog(context, "Errore", "Data di inizio mancante.");
+                return;
+              }
+
+              if (startTimeTextController.text.isEmpty) {
+                ShowMyDialog(context, "Errore", "Ora di inizio mancante.");
+                return;
+              }
+
+              if (endDateTextController.text.isEmpty) {
+                ShowMyDialog(context, "Errore", "Data di fine mancante.");
+                return;
+              }
+
+              if (endTimeTextController.text.isEmpty) {
+                ShowMyDialog(context, "Errore", "Ora di fine mancante.");
+                return;
+              }
+
               if (formKey.currentState!.validate()) {
                 var event = Event(
                   name: nameTextController.text,
@@ -341,13 +361,9 @@ class _AddEventViewState extends State<AddEventView> {
                   userCreator: FirebaseAuth.instance.currentUser!.uid,
                 );
 
-                if (_image != null) {
-                  BlocProvider.of<EventBloc>(context).add(
-                    EventBlocEventCreate(_image!, event),
-                  );
-                } else {
-                  ShowMyDialog(context, "Errore", "L'immagine è obbligatoria.");
-                }
+                BlocProvider.of<EventBloc>(context).add(
+                  EventBlocEventCreate(_image!, event),
+                );
               }
             },
           );
