@@ -1,19 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:social_4_events/exceptions/user_exception.dart';
 import 'package:social_4_events/model/user.dart' as model;
 import 'package:social_4_events/repository/master_repository.dart';
 
 class UserRepository extends MasterRepository {
   final FirebaseAuth _firebaseAuth;
+  final FirebaseStorage _firebaseStorage;
   final FirebaseFirestore _firebaseFirestore;
 
   UserRepository({
     required FirebaseAuth firebaseAuth,
+    required FirebaseStorage firebaseStorage,
     required FirebaseFirestore firebaseFirestore,
   })  : _firebaseAuth = firebaseAuth,
+        _firebaseStorage = firebaseStorage,
         _firebaseFirestore = firebaseFirestore,
-        super(firebaseAuth: firebaseAuth, firebaseFirestore: firebaseFirestore);
+        super(
+            firebaseAuth: firebaseAuth,
+            firebaseStorage: firebaseStorage,
+            firebaseFirestore: firebaseFirestore);
 
   Future<void> login(String email, String password) async {
     await _firebaseAuth.signInWithEmailAndPassword(

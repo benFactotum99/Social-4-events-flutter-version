@@ -32,6 +32,7 @@ class App extends StatelessWidget {
           create: (context) => AuthenticationBloc(
             userRepository: UserRepository(
               firebaseAuth: FirebaseAuth.instance,
+              firebaseStorage: FirebaseStorage.instance,
               firebaseFirestore: FirebaseFirestore.instance,
             ),
           )..add(AuthenticationBlocEventAppStarted()),
@@ -54,6 +55,7 @@ class App extends StatelessWidget {
             ),
             userRepository: UserRepository(
               firebaseAuth: FirebaseAuth.instance,
+              firebaseStorage: FirebaseStorage.instance,
               firebaseFirestore: FirebaseFirestore.instance,
             ),
           ),
@@ -67,6 +69,7 @@ class App extends StatelessWidget {
             ),
             userRepository: UserRepository(
               firebaseAuth: FirebaseAuth.instance,
+              firebaseStorage: FirebaseStorage.instance,
               firebaseFirestore: FirebaseFirestore.instance,
             ),
           ),

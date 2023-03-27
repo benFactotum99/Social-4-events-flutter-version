@@ -1,23 +1,23 @@
 import 'package:social_4_events/model/user.dart';
 
 class Event {
-  final String id;
-  final String name;
-  final String description;
-  final String userCreator;
-  final double locationLongitude;
-  final double locationLatitude;
-  final String locationName;
-  final String start;
-  final String timeStart;
-  final String end;
-  final String timeEnd;
-  final int duration;
-  final double price;
-  final int maxNumPartecipants;
-  final String notification;
-  final List<String> usersPartecipants;
-  final String imageUrl;
+  String id;
+  String name;
+  String description;
+  String userCreator;
+  double locationLongitude;
+  double locationLatitude;
+  String locationName;
+  String start;
+  String timeStart;
+  String end;
+  String timeEnd;
+  int duration;
+  double price;
+  int maxNumPartecipants;
+  String notification;
+  List<String> usersPartecipants;
+  String imageUrl;
 
   Event({
     this.id = "",

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -5,7 +6,6 @@ import 'package:social_4_events/exceptions/user_exception.dart';
 import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/model/user.dart' as model;
 import 'package:social_4_events/repository/master_repository.dart';
-import 'package:social_4_events/repository/user_repository.dart';
 
 class EventRepository extends MasterRepository {
   late final FirebaseAuth _firebaseAuth;
@@ -19,9 +19,12 @@ class EventRepository extends MasterRepository {
   })  : _firebaseAuth = firebaseAuth,
         _firebaseStorage = firebaseStorage,
         _firebaseFirestore = firebaseFirestore,
-        super(firebaseAuth: firebaseAuth, firebaseFirestore: firebaseFirestore);
+        super(
+            firebaseAuth: firebaseAuth,
+            firebaseStorage: firebaseStorage,
+            firebaseFirestore: firebaseFirestore);
 
-  Future<void> createEvent(Event event) async {
+  Future<void> createEvent(File image, Event event) async {
     DocumentReference docRef =
         await _firebaseFirestore.collection('events').add(event.toSnapshot());
     var user = await this.getUserLogged();
@@ -31,6 +34,12 @@ class EventRepository extends MasterRepository {
         .collection('users')
         .doc(user.id)
         .update(user.toSnapshot());
+    var urlImage = await this.setImageToStorage(image, "events", docRef.id);
+    event.imageUrl = urlImage;
+    await _firebaseFirestore
+        .collection('events')
+        .doc(docRef.id)
+        .update(event.toSnapshot());
   }
 
   Future<void> addPartecipationEvent(Event event) async {

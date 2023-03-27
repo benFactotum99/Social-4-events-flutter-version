@@ -10,15 +10,18 @@ import 'package:social_4_events/bloc/event/event_bloc.dart';
 import 'package:social_4_events/bloc/event/event_bloc_event.dart';
 import 'package:social_4_events/bloc/event/event_bloc_state.dart';
 import 'package:social_4_events/components/custom_button.dart';
+import 'package:social_4_events/components/custom_show_my_dialog.dart';
 import 'package:social_4_events/components/custom_text_date_form.dart';
 import 'package:social_4_events/components/custom_text_form.dart';
 import 'package:social_4_events/components/custom_text_location.dart';
 import 'package:social_4_events/components/custom_text_time_format.dart';
 import 'package:social_4_events/components/show_my_dialog.dart';
+import 'package:social_4_events/helpers/generic_functions_helpers/generic_functions.dart';
 import 'package:social_4_events/helpers/view_helpers/map_location.dart';
 import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/view/add/add_event_location_view.dart';
 import 'package:social_4_events/view/main_view.dart';
+import 'package:path/path.dart' as p;
 
 class AddEventView extends StatefulWidget {
   const AddEventView({super.key});
@@ -53,7 +56,24 @@ class _AddEventViewState extends State<AddEventView> {
             ),
           );
         } else if (state is EventBlocStateError) {
-          print("Errore");
+          print(state.errorMessage);
+          Navigator.of(context, rootNavigator: true).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => MainView(),
+            ),
+          );
+        } else if (state is EventBlocStateImageError) {
+          //ShowMyDialog();
+          CustomShowMyDialog(context, "Errore",
+              "L'evento è stato creato con successo, ma il caricamento dell'immagine non è andato a buon fine, se l'errore persiste contattare gli sviluppatori.",
+              () {
+            Navigator.of(context).pop();
+            Navigator.of(context, rootNavigator: true).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => MainView(),
+              ),
+            );
+          });
         }
       },
       child: Scaffold(
@@ -122,6 +142,11 @@ class _AddEventViewState extends State<AddEventView> {
               setState(() {
                 if (pickedFile != null) {
                   _image = File(pickedFile.path) as File?;
+                  //final extension = p.extension(_image!.path);
+                  /*if (extension != ".jpg") {
+                    _image = null;
+                    throw PlatformException(code: '400');
+                  }*/
                 } else {
                   print('No image selected.');
                 }
@@ -130,7 +155,8 @@ class _AddEventViewState extends State<AddEventView> {
               print('No image selected.');
             }
           } on PlatformException catch (_) {
-            var error = "Formato immagine non valido.";
+            var error =
+                "Formato immagine non valido. Si prega di inserire solo immagini in formato jpg";
             ShowMyDialog(context, "Errore", error);
             print(error);
           }
@@ -187,6 +213,9 @@ class _AddEventViewState extends State<AddEventView> {
           if (value == null || value.isEmpty) {
             return 'Il numero dei partecipanti è obbligatorio';
           }
+          if (!isNumeric(value)) {
+            return 'Formato errato';
+          }
           return null;
         },
         onChanged: (String? value) {},
@@ -199,6 +228,9 @@ class _AddEventViewState extends State<AddEventView> {
           if (value == null || value.isEmpty) {
             return 'Il prezzo è obbligatorio';
           }
+          if (!isNumeric(value)) {
+            return 'Formato errato';
+          }
           return null;
         },
         onChanged: (String? value) {},
@@ -207,7 +239,11 @@ class _AddEventViewState extends State<AddEventView> {
   locationSection() => CustomTextLocationForm(
         myLabelText: 'Località',
         textController: locationTextController,
-        onValidator: (String? value) {},
+        onValidator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return 'La località è obbligatoria';
+          }
+        },
         onChanged: (String? value) {},
         readOnly: true,
         onTap: () {
@@ -237,28 +273,44 @@ class _AddEventViewState extends State<AddEventView> {
   startDateTextSection() => CustomTextDateForm(
         myLabelText: 'Inizio',
         onChanged: (String? value) {},
-        onValidator: (String? value) {},
+        onValidator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return 'La data di inizio è obbligatoria';
+          }
+        },
         dateController: startDateTextController,
       );
 
   startTimeTextSection() => CustomTextTimeForm(
         myLabelText: 'Ora inizio',
         onChanged: (String? value) {},
-        onValidator: (String? value) {},
+        onValidator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return 'L' 'ora di inizio è obbligatoria';
+          }
+        },
         timeController: startTimeTextController,
       );
 
   endDateTextSection() => CustomTextDateForm(
         myLabelText: 'Fine',
         onChanged: (String? value) {},
-        onValidator: (String? value) {},
+        onValidator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return 'La data di fine è obbligatoria';
+          }
+        },
         dateController: endDateTextController,
       );
 
   endTimeTextSection() => CustomTextTimeForm(
         myLabelText: 'Ora fine',
         onChanged: (String? value) {},
-        onValidator: (String? value) {},
+        onValidator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return 'L' 'ora di fine è obbligatoria';
+          }
+        },
         timeController: endTimeTextController,
       );
 
@@ -289,9 +341,13 @@ class _AddEventViewState extends State<AddEventView> {
                   userCreator: FirebaseAuth.instance.currentUser!.uid,
                 );
 
-                BlocProvider.of<EventBloc>(context).add(
-                  EventBlocEventCreate(event),
-                );
+                if (_image != null) {
+                  BlocProvider.of<EventBloc>(context).add(
+                    EventBlocEventCreate(_image!, event),
+                  );
+                } else {
+                  ShowMyDialog(context, "Errore", "L'immagine è obbligatoria.");
+                }
               }
             },
           );

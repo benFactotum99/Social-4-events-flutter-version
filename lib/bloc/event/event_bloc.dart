@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_4_events/bloc/event/event_bloc_event.dart';
 import 'package:social_4_events/bloc/event/event_bloc_state.dart';
@@ -15,7 +16,7 @@ class EventBloc extends Bloc<EventBlocEvent, EventBlocState> {
           emit(EventBlocStateLoaded(events));
         } catch (error) {
           print(error);
-          emit(EventBlocStateError());
+          emit(EventBlocStateError("Errore nel caricamento degli eventi"));
         }
       },
     );
@@ -24,11 +25,19 @@ class EventBloc extends Bloc<EventBlocEvent, EventBlocState> {
       (event, emit) async {
         try {
           emit(EventBlocStateCreating());
-          await eventRepository.createEvent(event.event);
+          await eventRepository.createEvent(event.image, event.event);
           emit(EventBlocStateCreated());
+        } on FirebaseException catch (error) {
+          print(error);
+          if (error.plugin == "firebase_storage") {
+            emit(EventBlocStateImageError(
+                "Errore nel caricamento dell'immagine"));
+          } else {
+            emit(EventBlocStateError("Errore generico"));
+          }
         } catch (error) {
           print(error);
-          emit(EventBlocStateError());
+          emit(EventBlocStateError("Errore generico"));
         }
       },
     );

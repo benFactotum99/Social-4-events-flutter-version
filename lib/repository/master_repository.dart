@@ -1,15 +1,21 @@
+import 'dart:io';
+import 'package:path/path.dart' as p;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/model/user.dart' as model;
 
 abstract class MasterRepository {
   final FirebaseAuth _firebaseAuth;
+  final FirebaseStorage _firebaseStorage;
   final FirebaseFirestore _firebaseFirestore;
   MasterRepository({
     required FirebaseAuth firebaseAuth,
+    required FirebaseStorage firebaseStorage,
     required FirebaseFirestore firebaseFirestore,
   })  : _firebaseAuth = firebaseAuth,
+        _firebaseStorage = firebaseStorage,
         _firebaseFirestore = firebaseFirestore;
 
   Future<model.User> getUserLogged() async {
@@ -73,5 +79,23 @@ abstract class MasterRepository {
         {"users_partecipants": event.usersPartecipants});
 
     await batch.commit();
+  }
+
+  Future<String> setImageToStorage(
+      File file, String forldeName, String nameId) async {
+    //var extension = p.extension(file.path);
+    /*Reference ref =
+        _firebaseStorage.ref().child("$forldeName/$nameId$extension");
+    */
+    Reference ref = _firebaseStorage.ref().child("$forldeName/$nameId");
+
+    UploadTask uploadTask = ref.putFile(
+      file,
+      /*SettableMetadata(
+        contentType: "image/jpeg",
+      ),*/
+    );
+    TaskSnapshot taskSnapshot = await uploadTask;
+    return await taskSnapshot.ref.getDownloadURL();
   }
 }
