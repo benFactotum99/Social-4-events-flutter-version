@@ -6,11 +6,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:social_4_events/bloc/event/event_bloc.dart';
 import 'package:social_4_events/bloc/event/event_bloc_event.dart';
 import 'package:social_4_events/bloc/event/event_bloc_state.dart';
+import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_view_arguments.dart';
 import 'package:social_4_events/view/add/add_event_view.dart';
 import 'package:social_4_events/view/home/event_detail_view.dart';
 import 'package:social_4_events/view/home/event_pop_up_view.dart';
 
 class HomeView extends StatefulWidget {
+  static String route = '/home_view';
   const HomeView({super.key});
 
   @override
@@ -104,13 +106,9 @@ class _HomeViewState extends State<HomeView> {
                           event: event,
                           onPressed: () {
                             Navigator.of(contextDialog).pop();
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => EventDetailView(
-                                  event: event,
-                                ),
-                              ),
-                            );
+                            Navigator.of(context).pushNamed(
+                                EventDetailView.route,
+                                arguments: EventDetailViewArguments(event));
                           },
                         );
                       },

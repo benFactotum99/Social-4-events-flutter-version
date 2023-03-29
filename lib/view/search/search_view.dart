@@ -4,11 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_4_events/bloc/user/user_bloc.dart';
 import 'package:social_4_events/bloc/user/user_bloc_event.dart';
 import 'package:social_4_events/bloc/user/user_bloc_state.dart';
+import 'package:social_4_events/helpers/view_helpers/arguments/search_user_view_arguments.dart';
 import 'package:social_4_events/model/user.dart' as model;
 import 'package:social_4_events/view/search/search_user_view.dart';
 import 'package:social_4_events/view/user/user_view.dart';
 
 class SearchView extends StatefulWidget {
+  static String route = '/search_view';
   const SearchView({super.key});
 
   @override
@@ -33,10 +35,6 @@ class _SearchViewState extends State<SearchView> {
         if (state is UserBlocStateLoaded) {
           setState(() {
             users = state.users;
-          });
-        } else if (state is UserBlocStateLoaded) {
-          setState(() {
-            users = List.empty(growable: true);
           });
         } else if (state is UserBlocStateError) {
           setState(() {
@@ -107,19 +105,12 @@ class _SearchViewState extends State<SearchView> {
                             if (FirebaseAuth.instance.currentUser!.uid ==
                                 usersView[index].id) {
                               //TODO: qui bisognerebbe simulare bene il tap della bottom bar sul profilo
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => UserView(),
-                                ),
-                              );
+                              Navigator.of(context).pushNamed(UserView.route);
                             } else {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => SearchUserView(
-                                    userId: usersView[index].id,
-                                  ),
-                                ),
-                              );
+                              Navigator.of(context).pushNamed(
+                                  SearchUserView.route,
+                                  arguments: SearchUserViewArguments(
+                                      usersView[index].id));
                             }
                           },
                           child: Padding(

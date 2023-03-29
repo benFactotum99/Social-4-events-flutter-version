@@ -9,6 +9,7 @@ import 'package:social_4_events/components/show_my_dialog.dart';
 import 'package:social_4_events/view/main_view.dart';
 
 class LoginView extends StatefulWidget {
+  static String route = '/';
   const LoginView({super.key});
 
   @override

@@ -5,6 +5,7 @@ import 'package:social_4_events/view/search/search_view.dart';
 import 'package:social_4_events/view/user/user_view.dart';
 
 class MainView extends StatelessWidget {
+  static String route = '/main_view';
   final _tab1navigatorKey = GlobalKey<NavigatorState>();
   final _tab2navigatorKey = GlobalKey<NavigatorState>();
   final _tab3navigatorKey = GlobalKey<NavigatorState>();

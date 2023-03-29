@@ -3,12 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_4_events/bloc/user_generic/user_generic_bloc.dart';
 import 'package:social_4_events/bloc/user_generic/user_generic_bloc_event.dart';
 import 'package:social_4_events/bloc/user_generic/user_generic_bloc_state.dart';
+import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_view_arguments.dart';
+import 'package:social_4_events/helpers/view_helpers/arguments/search_user_view_arguments.dart';
 import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/view/home/event_detail_view.dart';
 
 class SearchUserView extends StatefulWidget {
-  final String userId;
-  const SearchUserView({required this.userId});
+  static String route = '/search_user_view';
+  final SearchUserViewArguments searchUserViewArguments;
+  const SearchUserView({required this.searchUserViewArguments});
 
   @override
   State<SearchUserView> createState() => _SearchUserViewState();
@@ -23,8 +26,9 @@ class _SearchUserViewState extends State<SearchUserView>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
 
-    BlocProvider.of<UserGenericBloc>(context)
-        .add(UserGenericBlocEventFetchUserById(widget.userId));
+    BlocProvider.of<UserGenericBloc>(context).add(
+        UserGenericBlocEventFetchUserById(
+            widget.searchUserViewArguments.userId));
   }
 
   @override
@@ -189,13 +193,8 @@ class _SearchUserViewState extends State<SearchUserView>
           eventsCreated.length,
           (index) => InkWell(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => EventDetailView(
-                    event: eventsCreated[index],
-                  ),
-                ),
-              );
+              Navigator.of(context).pushNamed(EventDetailView.route,
+                  arguments: EventDetailViewArguments(eventsCreated[index]));
             },
             child: Container(
               child: eventsCreated[index].imageUrl.isEmpty
@@ -237,13 +236,9 @@ class _SearchUserViewState extends State<SearchUserView>
           eventsPartecipated.length,
           (index) => InkWell(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => EventDetailView(
-                    event: eventsPartecipated[index],
-                  ),
-                ),
-              );
+              Navigator.of(context).pushNamed(EventDetailView.route,
+                  arguments:
+                      EventDetailViewArguments(eventsPartecipated[index]));
             },
             child: Container(
               child: eventsPartecipated[index].imageUrl.isEmpty

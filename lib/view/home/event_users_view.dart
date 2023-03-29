@@ -7,14 +7,17 @@ import 'package:social_4_events/bloc/event_users/event_users_bloc_state.dart';
 import 'package:social_4_events/bloc/user/user_bloc.dart';
 import 'package:social_4_events/bloc/user/user_bloc_event.dart';
 import 'package:social_4_events/bloc/user/user_bloc_state.dart';
+import 'package:social_4_events/helpers/view_helpers/arguments/event_users_view_arguments.dart';
+import 'package:social_4_events/helpers/view_helpers/arguments/search_user_view_arguments.dart';
 import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/model/user.dart' as model;
 import 'package:social_4_events/view/search/search_user_view.dart';
 import 'package:social_4_events/view/user/user_view.dart';
 
 class EventUsersView extends StatefulWidget {
-  final Event event;
-  const EventUsersView({required this.event});
+  static String route = '/event_users_view';
+  final EventUsersViewArguments eventUsersViewArguments;
+  const EventUsersView({required this.eventUsersViewArguments});
 
   @override
   State<EventUsersView> createState() => _EventUsersViewState();
@@ -24,8 +27,8 @@ class _EventUsersViewState extends State<EventUsersView> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<EventUsersBloc>(context)
-        .add(EventUsersBlocEventFetch(widget.event.usersPartecipants));
+    BlocProvider.of<EventUsersBloc>(context).add(EventUsersBlocEventFetch(
+        widget.eventUsersViewArguments.event.usersPartecipants));
   }
 
   @override
@@ -37,7 +40,7 @@ class _EventUsersViewState extends State<EventUsersView> {
         elevation: 0,
         centerTitle: false,
         title: Text(
-          "Utenti - ${widget.event.name}",
+          "Utenti - ${widget.eventUsersViewArguments.event.name}",
           style: TextStyle(
             color: Colors.red,
           ),
@@ -74,19 +77,11 @@ class _EventUsersViewState extends State<EventUsersView> {
                       if (FirebaseAuth.instance.currentUser!.uid ==
                           users[index].id) {
                         //TODO: qui bisognerebbe simulare bene il tap della bottom bar sul profilo
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => UserView(),
-                          ),
-                        );
+                        Navigator.of(context).pushNamed(UserView.route);
                       } else {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => SearchUserView(
-                              userId: users[index].id,
-                            ),
-                          ),
-                        );
+                        Navigator.of(context).pushNamed(SearchUserView.route,
+                            arguments:
+                                SearchUserViewArguments(users[index].id));
                       }
                     },
                     child: Padding(

@@ -11,6 +11,8 @@ import 'package:social_4_events/components/custom_text_form.dart';
 import 'package:social_4_events/components/custom_text_location.dart';
 import 'package:social_4_events/components/custom_text_time_format.dart';
 import 'package:social_4_events/components/show_my_dialog.dart';
+import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_view_arguments.dart';
+import 'package:social_4_events/helpers/view_helpers/arguments/event_users_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/map_location.dart';
 import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/view/home/event_detail_location_view.dart';
@@ -18,8 +20,9 @@ import 'package:social_4_events/view/home/event_users_view.dart';
 import 'package:social_4_events/view/main_view.dart';
 
 class EventDetailView extends StatefulWidget {
-  final Event event;
-  const EventDetailView({required this.event});
+  static String route = '/event_detail_view';
+  final EventDetailViewArguments eventDetailViewArguments;
+  const EventDetailView({required this.eventDetailViewArguments});
 
   @override
   State<EventDetailView> createState() => _EventDetailViewState();
@@ -40,17 +43,24 @@ class _EventDetailViewState extends State<EventDetailView> {
   void initState() {
     super.initState();
     setState(() {
-      nameTextController.text = widget.event.name;
-      descriptionTextController.text = widget.event.description;
+      nameTextController.text = widget.eventDetailViewArguments.event.name;
+      descriptionTextController.text =
+          widget.eventDetailViewArguments.event.description;
       maxNumberPartTextController.text =
-          widget.event.maxNumPartecipants.toString();
-      priceTextController.text = widget.event.price.toString();
-      locationTextController.text = widget.event.locationName;
-      startDateTextController.text = widget.event.start;
-      startTimeTextController.text = widget.event.timeStart;
-      endDateTextController.text = widget.event.end;
-      endTimeTextController.text = widget.event.timeEnd;
-      userLoggedParticipate = widget.event.usersPartecipants
+          widget.eventDetailViewArguments.event.maxNumPartecipants.toString();
+      priceTextController.text =
+          widget.eventDetailViewArguments.event.price.toString();
+      locationTextController.text =
+          widget.eventDetailViewArguments.event.locationName;
+      startDateTextController.text =
+          widget.eventDetailViewArguments.event.start;
+      startTimeTextController.text =
+          widget.eventDetailViewArguments.event.timeStart;
+      endDateTextController.text = widget.eventDetailViewArguments.event.end;
+      endTimeTextController.text =
+          widget.eventDetailViewArguments.event.timeEnd;
+      userLoggedParticipate = widget
+          .eventDetailViewArguments.event.usersPartecipants
           .contains(FirebaseAuth.instance.currentUser!.uid);
     });
   }
@@ -132,7 +142,7 @@ class _EventDetailViewState extends State<EventDetailView> {
           radius: 100.0,
           backgroundColor: Colors.grey,
           foregroundColor: Colors.white,
-          child: widget.event.imageUrl.isEmpty
+          child: widget.eventDetailViewArguments.event.imageUrl.isEmpty
               ? Transform.scale(
                   scale: 5,
                   child: Icon(Icons.event),
@@ -141,7 +151,7 @@ class _EventDetailViewState extends State<EventDetailView> {
                   scale: 1,
                   child: ClipOval(
                     child: Image.network(
-                      widget.event.imageUrl,
+                      widget.eventDetailViewArguments.event.imageUrl,
                       fit: BoxFit.cover,
                       width: 220,
                       height: 220,
@@ -209,9 +219,11 @@ class _EventDetailViewState extends State<EventDetailView> {
             MaterialPageRoute(
               builder: (context) => EventDetailLocationView(
                 location: MapLocation(
-                  name: widget.event.locationName,
-                  latitude: widget.event.locationLatitude,
-                  longitude: widget.event.locationLongitude,
+                  name: widget.eventDetailViewArguments.event.locationName,
+                  latitude:
+                      widget.eventDetailViewArguments.event.locationLatitude,
+                  longitude:
+                      widget.eventDetailViewArguments.event.locationLongitude,
                 ),
               ),
             ),
@@ -272,10 +284,12 @@ class _EventDetailViewState extends State<EventDetailView> {
                 : state is EventBlocStatePartecipationRemoving,
             onPressed: () {
               !userLoggedParticipate
-                  ? BlocProvider.of<EventBloc>(context)
-                      .add(EventBlocEventAddPartecipation(widget.event))
-                  : BlocProvider.of<EventBloc>(context)
-                      .add(EventBlocEventRemovePartecipation(widget.event));
+                  ? BlocProvider.of<EventBloc>(context).add(
+                      EventBlocEventAddPartecipation(
+                          widget.eventDetailViewArguments.event))
+                  : BlocProvider.of<EventBloc>(context).add(
+                      EventBlocEventRemovePartecipation(
+                          widget.eventDetailViewArguments.event));
             },
           );
         },
@@ -294,11 +308,9 @@ class _EventDetailViewState extends State<EventDetailView> {
             widthButton: 500,
             isLoading: false,
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => EventUsersView(event: widget.event),
-                ),
-              );
+              Navigator.of(context).pushNamed(EventUsersView.route,
+                  arguments: EventUsersViewArguments(
+                      widget.eventDetailViewArguments.event));
             },
           ),
         ),

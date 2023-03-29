@@ -73,6 +73,9 @@ class _AddEventViewState extends State<AddEventView> {
                 builder: (context) => MainView(),
               ),
             );
+            //TODO: sarebbe meglio usare la rotta anche in questo caso ma non funziona per il momento
+            //Navigator.of(context, rootNavigator: true)
+            //  .pushReplacementNamed(MainView.route);
           });
         }
       },

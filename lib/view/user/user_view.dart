@@ -7,6 +7,7 @@ import 'package:social_4_events/bloc/event/event_bloc_event.dart';
 import 'package:social_4_events/bloc/user/user_bloc.dart';
 import 'package:social_4_events/bloc/user/user_bloc_event.dart';
 import 'package:social_4_events/bloc/user/user_bloc_state.dart';
+import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_view_arguments.dart';
 import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/view/add/add_event_view.dart';
 import 'package:social_4_events/view/app.dart';
@@ -14,6 +15,7 @@ import 'package:social_4_events/view/home/event_detail_view.dart';
 import 'package:social_4_events/view/login/login_view.dart';
 
 class UserView extends StatefulWidget {
+  static String route = '/user_view';
   const UserView();
 
   @override
@@ -36,11 +38,7 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
     return BlocListener<AuthenticationBloc, AuthenticationBlocState>(
       listener: (context, state) {
         if (state is AuthenticationBlocStateUnauthenticated) {
-          Navigator.of(context, rootNavigator: true).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => LoginView(),
-            ),
-          );
+          Navigator.of(context).pushReplacementNamed(LoginView.route);
         }
       },
       child: Scaffold(
@@ -230,13 +228,8 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
           eventsCreated.length,
           (index) => InkWell(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => EventDetailView(
-                    event: eventsCreated[index],
-                  ),
-                ),
-              );
+              Navigator.of(context).pushNamed(EventDetailView.route,
+                  arguments: EventDetailViewArguments(eventsCreated[index]));
             },
             child: Container(
               child: eventsCreated[index].imageUrl.isEmpty
@@ -278,13 +271,9 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
           eventsPartecipated.length,
           (index) => InkWell(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => EventDetailView(
-                    event: eventsPartecipated[index],
-                  ),
-                ),
-              );
+              Navigator.of(context).pushNamed(EventDetailView.route,
+                  arguments:
+                      EventDetailViewArguments(eventsPartecipated[index]));
             },
             child: Container(
               child: eventsPartecipated[index].imageUrl.isEmpty
