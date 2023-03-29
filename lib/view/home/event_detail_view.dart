@@ -14,6 +14,7 @@ import 'package:social_4_events/components/show_my_dialog.dart';
 import 'package:social_4_events/helpers/view_helpers/map_location.dart';
 import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/view/home/event_detail_location_view.dart';
+import 'package:social_4_events/view/home/event_users_view.dart';
 import 'package:social_4_events/view/main_view.dart';
 
 class EventDetailView extends StatefulWidget {
@@ -99,7 +100,9 @@ class _EventDetailViewState extends State<EventDetailView> {
                     descriptionTextSection(),
                     SizedBox(height: 20),
                     numberPartTextSection(),
-                    SizedBox(height: 20),
+                    SizedBox(height: 25),
+                    partecipantsListButtonSection(),
+                    SizedBox(height: 25),
                     priceTextSection(),
                     SizedBox(height: 20),
                     locationSection(),
@@ -276,5 +279,28 @@ class _EventDetailViewState extends State<EventDetailView> {
             },
           );
         },
+      );
+
+  partecipantsListButtonSection() => Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        child: SizedBox(
+          height: 50,
+          width: 500,
+          child: CustomButton(
+            text: 'Partecipanti',
+            colorButton: Colors.red,
+            colorText: Colors.white,
+            heightButton: 50,
+            widthButton: 500,
+            isLoading: false,
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => EventUsersView(event: widget.event),
+                ),
+              );
+            },
+          ),
+        ),
       );
 }

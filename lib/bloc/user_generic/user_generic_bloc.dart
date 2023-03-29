@@ -18,17 +18,23 @@ class UserGenericBloc extends Bloc<UserGenericBlocEvent, UserGenericBlocState> {
           emit(UserGenericBlocStateLoading());
 
           var user = await userRepository.getUserById(event.userId);
-          var eventsCreated =
-              await eventRepository.getEventsByIds(user.eventsCreated);
-          var eventsPartecipated =
-              await eventRepository.getEventsByIds(user.eventsParticipated);
-          emit(
-            UserGenericBlocStateLoaded(
-              user,
-              eventsCreated,
-              eventsPartecipated,
-            ),
-          );
+          if (user == null) {
+            emit(
+              UserGenericBlocStateError("Utente non trovato"),
+            );
+          } else {
+            var eventsCreated =
+                await eventRepository.getEventsByIds(user.eventsCreated);
+            var eventsPartecipated =
+                await eventRepository.getEventsByIds(user.eventsParticipated);
+            emit(
+              UserGenericBlocStateLoaded(
+                user,
+                eventsCreated,
+                eventsPartecipated,
+              ),
+            );
+          }
         } catch (error) {
           print(error);
           emit(
