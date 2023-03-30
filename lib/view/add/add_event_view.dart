@@ -17,6 +17,7 @@ import 'package:social_4_events/components/custom_text_location.dart';
 import 'package:social_4_events/components/custom_text_time_format.dart';
 import 'package:social_4_events/components/show_my_dialog.dart';
 import 'package:social_4_events/helpers/generic_functions_helpers/generic_functions.dart';
+import 'package:social_4_events/helpers/view_helpers/arguments/add_event_location_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/map_location.dart';
 import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/view/add/add_event_location_view.dart';
@@ -24,6 +25,7 @@ import 'package:social_4_events/view/main_view.dart';
 import 'package:path/path.dart' as p;
 
 class AddEventView extends StatefulWidget {
+  static String route = '/add_event_view';
   const AddEventView({super.key});
 
   @override
@@ -248,24 +250,23 @@ class _AddEventViewState extends State<AddEventView> {
         onChanged: (String? value) {},
         readOnly: true,
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => AddEventLocationView(
-                onLocationsUpdated: (mapLocation) {
-                  if (mapLocation != null) {
-                    print(
-                        "${mapLocation.name} ${mapLocation.latitude} ${mapLocation.longitude}");
-                    setState(() {
-                      locationTextController.text = mapLocation.name;
-                      this.mapLocation = MapLocation(
-                        name: mapLocation.name,
-                        latitude: mapLocation.latitude,
-                        longitude: mapLocation.longitude,
-                      );
-                    });
-                  }
-                },
-              ),
+          Navigator.of(context).pushNamed(
+            AddEventLocationView.route,
+            arguments: AddEventLocationViewArguments(
+              (mapLocation) {
+                if (mapLocation != null) {
+                  print(
+                      "${mapLocation.name} ${mapLocation.latitude} ${mapLocation.longitude}");
+                  setState(() {
+                    locationTextController.text = mapLocation.name;
+                    this.mapLocation = MapLocation(
+                      name: mapLocation.name,
+                      latitude: mapLocation.latitude,
+                      longitude: mapLocation.longitude,
+                    );
+                  });
+                }
+              },
             ),
           );
         },

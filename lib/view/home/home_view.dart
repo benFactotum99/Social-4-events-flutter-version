@@ -74,11 +74,7 @@ class _HomeViewState extends State<HomeView> {
               color: Colors.red,
             ),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => AddEventView(),
-                ),
-              );
+              Navigator.of(context).pushNamed(AddEventView.route);
             },
           )
         ],

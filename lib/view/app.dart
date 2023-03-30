@@ -106,7 +106,6 @@ class App extends StatelessWidget {
           splashTransition: SplashTransition.fadeTransition,
           pageTransitionType: PageTransitionType.fade,
         ),
-        //onGenerateRoute: _onGenerateRoute, non funziona
       ),
     );
   }

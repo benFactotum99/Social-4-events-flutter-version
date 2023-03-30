@@ -6,12 +6,14 @@ import 'package:geocoding/geocoding.dart';
 //import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:social_4_events/components/custom_button.dart';
+import 'package:social_4_events/helpers/view_helpers/arguments/add_event_location_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/map_location.dart';
 
 class AddEventLocationView extends StatefulWidget {
-  final void Function(MapLocation?) onLocationsUpdated;
+  static String route = '/add_event_location_view';
+  final AddEventLocationViewArguments addEventLocationViewArguments;
 
-  const AddEventLocationView({required this.onLocationsUpdated});
+  const AddEventLocationView({required this.addEventLocationViewArguments});
 
   @override
   State<AddEventLocationView> createState() => _AddEventLocationViewState();
@@ -137,7 +139,8 @@ class _AddEventLocationViewState extends State<AddEventLocationView> {
               padding: const EdgeInsets.only(bottom: 20),
               child: CustomButton(
                 onPressed: () {
-                  widget.onLocationsUpdated(this.location);
+                  widget.addEventLocationViewArguments
+                      .onLocationsUpdated(this.location);
                   Navigator.pop(context);
                 },
                 colorButton: Colors.red,

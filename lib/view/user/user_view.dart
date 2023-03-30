@@ -73,11 +73,7 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
                             color: Colors.red,
                           ),
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => AddEventView(),
-                              ),
-                            );
+                            Navigator.of(context).pushNamed(AddEventView.route);
                           },
                         ),
                         IconButton(

@@ -4,11 +4,14 @@ import 'package:flutter/services.dart' as services;
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:social_4_events/components/custom_button.dart';
+import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_location_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/map_location.dart';
 
 class EventDetailLocationView extends StatefulWidget {
-  final MapLocation location;
-  const EventDetailLocationView({required this.location});
+  static String route = '/event_detail_location_view';
+  final EventDetialLocationViewArguments eventDetialLocationViewArguments;
+  const EventDetailLocationView(
+      {required this.eventDetialLocationViewArguments});
 
   @override
   State<EventDetailLocationView> createState() =>
@@ -27,9 +30,13 @@ class _EventDetailLocationViewState extends State<EventDetailLocationView> {
     setState(() {
       googleMapMarkers.add(
         Marker(
-          markerId: MarkerId(widget.location.name),
-          position: LatLng(widget.location.latitude, widget.location.longitude),
-          infoWindow: InfoWindow(title: widget.location.name),
+          markerId:
+              MarkerId(widget.eventDetialLocationViewArguments.location.name),
+          position: LatLng(
+              widget.eventDetialLocationViewArguments.location.latitude,
+              widget.eventDetialLocationViewArguments.location.longitude),
+          infoWindow: InfoWindow(
+              title: widget.eventDetialLocationViewArguments.location.name),
         ),
       );
     });

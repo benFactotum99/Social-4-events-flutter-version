@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_location_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/event_users_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/search_user_view_arguments.dart';
+import 'package:social_4_events/view/add/add_event_view.dart';
+import 'package:social_4_events/view/home/event_detail_location_view.dart';
 import 'package:social_4_events/view/home/event_detail_view.dart';
 import 'package:social_4_events/view/home/event_users_view.dart';
 import 'package:social_4_events/view/home/home_view.dart';
@@ -15,9 +18,15 @@ class PersistentBottomBarScaffold extends StatefulWidget {
   /// pass the required items for the tabs and BottomNavigationBar
   final List<PersistentTabItem> items;
   final Color selectedItemColor;
+  final String initialRoute;
+  final Route<dynamic> Function(RouteSettings)? onGenerateRoute;
 
   const PersistentBottomBarScaffold(
-      {Key? key, required this.items, required this.selectedItemColor})
+      {Key? key,
+      required this.items,
+      required this.selectedItemColor,
+      required this.initialRoute,
+      required this.onGenerateRoute})
       : super(key: key);
 
   @override
@@ -53,30 +62,8 @@ class _PersistentBottomBarScaffoldState
                     /// Each tab is wrapped in a Navigator so that naigation in
                     /// one tab can be independent of the other tabs
                     key: page.navigatorkey,
-                    initialRoute: LoginView.route,
-                    onGenerateRoute: (settings) {
-                      final routes = {
-                        LoginView.route: (context) => LoginView(),
-                        UserView.route: (context) => UserView(),
-                        SearchView.route: (context) => SearchView(),
-                        SearchUserView.route: (context) => SearchUserView(
-                              searchUserViewArguments:
-                                  settings.arguments as SearchUserViewArguments,
-                            ),
-                        HomeView.route: (context) => HomeView(),
-                        MainView.route: (context) => MainView(),
-                        EventUsersView.route: (context) => EventUsersView(
-                              eventUsersViewArguments:
-                                  settings.arguments as EventUsersViewArguments,
-                            ),
-                        EventDetailView.route: (context) => EventDetailView(
-                              eventDetailViewArguments: settings.arguments
-                                  as EventDetailViewArguments,
-                            ),
-                      };
-                      print(settings.arguments);
-                      return MaterialPageRoute(builder: routes[settings.name]!);
-                    },
+                    initialRoute: widget.initialRoute,
+                    onGenerateRoute: widget.onGenerateRoute,
                     onGenerateInitialRoutes: (navigator, initialRoute) {
                       return [
                         MaterialPageRoute(builder: (context) => page.tab)

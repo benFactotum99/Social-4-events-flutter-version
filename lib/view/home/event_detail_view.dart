@@ -11,10 +11,10 @@ import 'package:social_4_events/components/custom_text_form.dart';
 import 'package:social_4_events/components/custom_text_location.dart';
 import 'package:social_4_events/components/custom_text_time_format.dart';
 import 'package:social_4_events/components/show_my_dialog.dart';
+import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_location_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/event_users_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/map_location.dart';
-import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/view/home/event_detail_location_view.dart';
 import 'package:social_4_events/view/home/event_users_view.dart';
 import 'package:social_4_events/view/main_view.dart';
@@ -215,16 +215,15 @@ class _EventDetailViewState extends State<EventDetailView> {
         onChanged: (String? value) {},
         readOnly: true,
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => EventDetailLocationView(
-                location: MapLocation(
-                  name: widget.eventDetailViewArguments.event.locationName,
-                  latitude:
-                      widget.eventDetailViewArguments.event.locationLatitude,
-                  longitude:
-                      widget.eventDetailViewArguments.event.locationLongitude,
-                ),
+          Navigator.of(context).pushNamed(
+            EventDetailLocationView.route,
+            arguments: EventDetialLocationViewArguments(
+              MapLocation(
+                name: widget.eventDetailViewArguments.event.locationName,
+                latitude:
+                    widget.eventDetailViewArguments.event.locationLatitude,
+                longitude:
+                    widget.eventDetailViewArguments.event.locationLongitude,
               ),
             ),
           );
