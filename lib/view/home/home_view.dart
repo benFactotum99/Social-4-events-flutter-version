@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:social_4_events/bloc/event/event_bloc.dart';
 import 'package:social_4_events/bloc/event/event_bloc_event.dart';
 import 'package:social_4_events/bloc/event/event_bloc_state.dart';
+import 'package:social_4_events/helpers/generic_functions_helpers/generic_functions.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_view_arguments.dart';
 import 'package:social_4_events/view/add/add_event_view.dart';
 import 'package:social_4_events/view/home/event_detail_view.dart';
@@ -30,14 +31,16 @@ class _HomeViewState extends State<HomeView> {
     BlocProvider.of<EventBloc>(context).add(EventBlocEventFetch());
   }
 
-  void goToLake() async {
+  void goToPlace(String address) async {
     final controller = await googleMapController.future;
+
+    var latLong = await getCoordinates(address);
 
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-          target: LatLng(37.43296265331129, -122.08832357078792),
-          zoom: 20,
+          target: LatLng(latLong['lat'], latLong['lng']),
+          zoom: 15,
         ),
       ),
     );
@@ -114,21 +117,47 @@ class _HomeViewState extends State<HomeView> {
               );
             }
 
-            return GoogleMap(
-              markers: googleMapMarkers,
-              initialCameraPosition: CameraPosition(
-                target: LatLng(37.42796133580664, -122.085749655962),
-                zoom: 15,
-              ),
-              myLocationButtonEnabled: false,
-              onMapCreated: (controller) async {
-                if (!googleMapController.isCompleted) {
-                  googleMapController.complete(controller);
-                }
-                final styles = await services.rootBundle
-                    .loadString("assets/map_style/google_map_style.json");
-                controller.setMapStyle(styles);
-              },
+            return Stack(
+              children: [
+                GoogleMap(
+                  markers: googleMapMarkers,
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(37.42796133580664, -122.085749655962),
+                    zoom: 15,
+                  ),
+                  myLocationButtonEnabled: false,
+                  onMapCreated: (controller) async {
+                    if (!googleMapController.isCompleted) {
+                      googleMapController.complete(controller);
+                    }
+                    final styles = await services.rootBundle
+                        .loadString("assets/map_style/google_map_style.json");
+                    controller.setMapStyle(styles);
+                  },
+                ),
+                Positioned(
+                  top: 20,
+                  left: 20,
+                  right: 20,
+                  child: Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.white,
+                    ),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: 'Search',
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.search),
+                      ),
+                      onFieldSubmitted: (String value) {
+                        goToPlace(value);
+                      },
+                    ),
+                  ),
+                ),
+              ],
             );
           } else {
             return Center(

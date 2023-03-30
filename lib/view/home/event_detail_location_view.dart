@@ -4,6 +4,7 @@ import 'package:flutter/services.dart' as services;
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:social_4_events/components/custom_button.dart';
+import 'package:social_4_events/helpers/generic_functions_helpers/generic_functions.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_location_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/map_location.dart';
 
@@ -42,14 +43,16 @@ class _EventDetailLocationViewState extends State<EventDetailLocationView> {
     });
   }
 
-  void goToLake() async {
+  void goToPlace(String address) async {
     final controller = await googleMapController.future;
+
+    var latLong = await getCoordinates(address);
 
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-          target: LatLng(37.43296265331129, -122.08832357078792),
-          zoom: 20,
+          target: LatLng(latLong['lat'], latLong['lng']),
+          zoom: 15,
         ),
       ),
     );
@@ -97,12 +100,15 @@ class _EventDetailLocationViewState extends State<EventDetailLocationView> {
                 borderRadius: BorderRadius.circular(25),
                 color: Colors.white,
               ),
-              child: TextField(
+              child: TextFormField(
                 decoration: InputDecoration(
                   hintText: 'Search',
                   border: InputBorder.none,
                   prefixIcon: Icon(Icons.search),
                 ),
+                onFieldSubmitted: (String value) {
+                  goToPlace(value);
+                },
               ),
             ),
           ),
