@@ -39,6 +39,7 @@ class _EventDetailViewState extends State<EventDetailView> {
   TextEditingController endDateTextController = TextEditingController();
   TextEditingController endTimeTextController = TextEditingController();
   bool userLoggedParticipate = false;
+  bool userPartecipationsClose = false;
   @override
   void initState() {
     super.initState();
@@ -62,6 +63,10 @@ class _EventDetailViewState extends State<EventDetailView> {
       userLoggedParticipate = widget
           .eventDetailViewArguments.event.usersPartecipants
           .contains(FirebaseAuth.instance.currentUser!.uid);
+
+      userPartecipationsClose =
+          widget.eventDetailViewArguments.event.maxNumPartecipants ==
+              widget.eventDetailViewArguments.event.usersPartecipants.length;
     });
   }
 
@@ -273,7 +278,11 @@ class _EventDetailViewState extends State<EventDetailView> {
   saveButtonSection() => BlocBuilder<EventBloc, EventBlocState>(
         builder: (context, state) {
           return CustomButton(
-            text: !userLoggedParticipate ? 'Partecipa' : 'Non parecipare più',
+            text: !userLoggedParticipate
+                ? userPartecipationsClose
+                    ? 'Partecipazioni chiuse'
+                    : 'Partecipa'
+                : 'Non parecipare più',
             colorButton: Colors.red,
             colorText: Colors.white,
             heightButton: 50,
@@ -282,13 +291,17 @@ class _EventDetailViewState extends State<EventDetailView> {
                 ? state is EventBlocStatePartecipationAdding
                 : state is EventBlocStatePartecipationRemoving,
             onPressed: () {
-              !userLoggedParticipate
-                  ? BlocProvider.of<EventBloc>(context).add(
+              if (!userLoggedParticipate) {
+                if (!userPartecipationsClose) {
+                  BlocProvider.of<EventBloc>(context).add(
                       EventBlocEventAddPartecipation(
-                          widget.eventDetailViewArguments.event))
-                  : BlocProvider.of<EventBloc>(context).add(
-                      EventBlocEventRemovePartecipation(
                           widget.eventDetailViewArguments.event));
+                }
+              } else {
+                BlocProvider.of<EventBloc>(context).add(
+                    EventBlocEventRemovePartecipation(
+                        widget.eventDetailViewArguments.event));
+              }
             },
           );
         },

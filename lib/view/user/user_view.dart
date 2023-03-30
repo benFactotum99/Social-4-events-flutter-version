@@ -25,6 +25,10 @@ class UserView extends StatefulWidget {
 class _UserViewState extends State<UserView> with TickerProviderStateMixin {
   late TabController _tabController;
 
+  List<String> items = [
+    'Logout',
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -76,16 +80,27 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
                             Navigator.of(context).pushNamed(AddEventView.route);
                           },
                         ),
-                        IconButton(
-                          onPressed: () {
-                            BlocProvider.of<AuthenticationBloc>(context).add(
-                              AuthenticationBlocEventLogout(),
-                            );
-                          },
+                        PopupMenuButton<String>(
                           icon: Icon(
-                            Icons.logout,
+                            Icons.menu,
                             color: Colors.red,
                           ),
+                          itemBuilder: (BuildContext context) {
+                            return items.map((String item) {
+                              return PopupMenuItem<String>(
+                                value: item,
+                                child: Text(item),
+                              );
+                            }).toList();
+                          },
+                          onSelected: (String item) {
+                            print(item);
+                            if (item == "Logout") {
+                              BlocProvider.of<AuthenticationBloc>(context).add(
+                                AuthenticationBlocEventLogout(),
+                              );
+                            }
+                          },
                         ),
                       ],
                     ),
