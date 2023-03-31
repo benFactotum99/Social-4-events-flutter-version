@@ -4,8 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_4_events/bloc/user/user_bloc.dart';
 import 'package:social_4_events/bloc/user/user_bloc_event.dart';
 import 'package:social_4_events/bloc/user/user_bloc_state.dart';
+import 'package:social_4_events/cubit/index_tab_cubit.dart';
+import 'package:social_4_events/helpers/enums/tab_index_enum.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/search_user_view_arguments.dart';
 import 'package:social_4_events/model/user.dart' as model;
+import 'package:social_4_events/view/main_view.dart';
 import 'package:social_4_events/view/search/search_user_view.dart';
 import 'package:social_4_events/view/user/user_view.dart';
 
@@ -30,6 +33,7 @@ class _SearchViewState extends State<SearchView> {
 
   @override
   Widget build(BuildContext context) {
+    //final indexTabCubit = context.watch<IndexTabCubit>();
     return BlocListener<UserBloc, UserBlocState>(
       listener: (context, state) {
         if (state is UserBlocStateLoaded) {
@@ -104,8 +108,8 @@ class _SearchViewState extends State<SearchView> {
                           onTap: () {
                             if (FirebaseAuth.instance.currentUser!.uid ==
                                 usersView[index].id) {
-                              //TODO: qui bisognerebbe simulare bene il tap della bottom bar sul profilo
-                              Navigator.of(context).pushNamed(UserView.route);
+                              BlocProvider.of<IndexTabCubit>(context)
+                                  .setIndexByEnum(TabIndexEnum.Profile);
                             } else {
                               Navigator.of(context).pushNamed(
                                   SearchUserView.route,

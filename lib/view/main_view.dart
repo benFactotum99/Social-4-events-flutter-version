@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_4_events/components/custom_persistent_bottom_bar_menu.dart';
+import 'package:social_4_events/cubit/index_tab_cubit.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/add_event_location_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_location_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_view_arguments.dart';

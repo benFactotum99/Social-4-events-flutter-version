@@ -59,7 +59,7 @@ bool compareDateFirstEqualNow(String dateStr) {
     return false;
   } else {
     //Date/time 1 is the same as date/time 2
-    return true;
+    return false;
   }
 }
 

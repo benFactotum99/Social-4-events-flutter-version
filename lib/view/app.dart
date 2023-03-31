@@ -13,6 +13,7 @@ import 'package:social_4_events/bloc/event_users/event_users_bloc.dart';
 import 'package:social_4_events/bloc/user/user_bloc.dart';
 import 'package:social_4_events/bloc/user_generic/user_generic_bloc.dart';
 import 'package:social_4_events/components/circle_image.dart';
+import 'package:social_4_events/cubit/index_tab_cubit.dart';
 import 'package:social_4_events/repository/event_repository.dart';
 import 'package:social_4_events/repository/user_repository.dart';
 import 'package:social_4_events/view/add/add_event_view.dart';
@@ -89,6 +90,7 @@ class App extends StatelessWidget {
             ),
           ),
         ),
+        BlocProvider<IndexTabCubit>(create: (_) => IndexTabCubit()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

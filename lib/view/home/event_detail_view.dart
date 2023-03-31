@@ -11,6 +11,7 @@ import 'package:social_4_events/components/custom_text_form.dart';
 import 'package:social_4_events/components/custom_text_location.dart';
 import 'package:social_4_events/components/custom_text_time_format.dart';
 import 'package:social_4_events/components/show_my_dialog.dart';
+import 'package:social_4_events/helpers/generic_functions_helpers/generic_functions.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_location_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/event_users_view_arguments.dart';
@@ -64,9 +65,12 @@ class _EventDetailViewState extends State<EventDetailView> {
           .eventDetailViewArguments.event.usersPartecipants
           .contains(FirebaseAuth.instance.currentUser!.uid);
 
-      userPartecipationsClose =
-          widget.eventDetailViewArguments.event.maxNumPartecipants ==
-              widget.eventDetailViewArguments.event.usersPartecipants.length;
+      String dateEndStr =
+          "${widget.eventDetailViewArguments.event.end} ${widget.eventDetailViewArguments.event.timeEnd}";
+      userPartecipationsClose = widget
+                  .eventDetailViewArguments.event.maxNumPartecipants ==
+              widget.eventDetailViewArguments.event.usersPartecipants.length ||
+          compareDateFirstEqualNow(dateEndStr);
     });
   }
 
