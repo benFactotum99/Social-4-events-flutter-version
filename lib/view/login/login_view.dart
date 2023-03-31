@@ -47,7 +47,7 @@ class _LoginViewState extends State<LoginView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   appTextSection(),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 30),
                   emalTextFormSection(),
                   const SizedBox(height: 20),
                   passwordTextFormSection(),
@@ -170,8 +170,9 @@ class _LoginViewState extends State<LoginView> {
         "Social4Events",
         style: TextStyle(
           color: Colors.red,
-          fontSize: 30,
-          fontWeight: FontWeight.bold,
+          fontSize: 50,
+          //fontWeight: FontWeight.bold,
+          fontFamily: 'Cookie',
         ),
       );
 }

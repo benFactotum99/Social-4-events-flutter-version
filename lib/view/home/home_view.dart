@@ -54,8 +54,9 @@ class _HomeViewState extends State<HomeView> {
           "Social4Events",
           style: TextStyle(
             color: Colors.red,
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
+            //fontWeight: FontWeight.bold,
+            fontSize: 33,
+            fontFamily: 'Cookie',
           ),
         ),
         actions: <Widget>[
