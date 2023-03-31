@@ -93,7 +93,7 @@ class App extends StatelessWidget {
         BlocProvider<IndexTabCubit>(create: (_) => IndexTabCubit()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Social4Events',
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           primarySwatch: Colors.red,
