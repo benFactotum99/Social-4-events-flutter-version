@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as services;
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 //import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:social_4_events/components/custom_button.dart';
 import 'package:social_4_events/helpers/generic_functions_helpers/generic_functions.dart';
+import 'package:social_4_events/helpers/singleton/position_singleton.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/add_event_location_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/map_location.dart';
 
@@ -68,7 +70,8 @@ class _AddEventLocationViewState extends State<AddEventLocationView> {
           GoogleMap(
             markers: googleMapMarkers,
             initialCameraPosition: CameraPosition(
-              target: LatLng(37.42796133580664, -122.085749655962),
+              target: PositionSingleton
+                  .latLng!, //LatLng(37.42796133580664, -122.085749655962),
               zoom: 15,
             ),
             myLocationButtonEnabled: false,
