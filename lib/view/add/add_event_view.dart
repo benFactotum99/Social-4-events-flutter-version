@@ -348,6 +348,17 @@ class _AddEventViewState extends State<AddEventView> {
                 return;
               }
 
+              String dateStartStr =
+                  "${startDateTextController.text} ${startTimeTextController.text}";
+              String dateEndStr =
+                  "${endDateTextController.text} ${endTimeTextController.text}";
+
+              if (!compareDate(dateStartStr, dateEndStr)) {
+                ShowMyDialog(context, "Errore",
+                    "Non si possono creare eventi che iniziano prima che finiscano o avere stessa data e ora di inizio e fine.");
+                return;
+              }
+
               if (formKey.currentState!.validate()) {
                 var event = Event(
                   name: nameTextController.text,

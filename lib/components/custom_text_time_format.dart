@@ -29,13 +29,20 @@ class _CustomTextTimeFormState extends State<CustomTextTimeForm> {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: selectedTime,
+      initialEntryMode: TimePickerEntryMode.dialOnly,
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      },
     );
     if (picked != null)
       setState(() {
         selectedTime = picked;
         var _hour = selectedTime.hour.toString();
         var _minute = selectedTime.minute.toString();
-        var _time = _hour + ':' + _minute;
+        var _time = _hour.padLeft(2, "0") + ':' + _minute.padLeft(2, "0");
         widget.timeController.text = _time;
       });
   }

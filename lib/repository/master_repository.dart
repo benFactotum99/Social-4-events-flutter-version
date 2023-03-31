@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:social_4_events/helpers/generic_functions_helpers/generic_functions.dart';
 import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/model/user.dart' as model;
 
@@ -42,9 +44,13 @@ abstract class MasterRepository {
 
     List<Event> events = [];
     querySnapshot.docs.forEach((documentSnapshot) {
-      Event customObject = Event.fromSnapshot(
+      Event event = Event.fromSnapshot(
           documentSnapshot.id, documentSnapshot.data() as Map<String, dynamic>);
-      events.add(customObject);
+
+      String dateTimeStrEndEvent = "${event.end} ${event.timeEnd}";
+      if (!compareDateFirstEqualNow(dateTimeStrEndEvent)) {
+        events.add(event);
+      }
     });
 
     return events;
