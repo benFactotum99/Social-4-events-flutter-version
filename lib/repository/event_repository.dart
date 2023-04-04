@@ -25,21 +25,19 @@ class EventRepository extends MasterRepository {
             firebaseFirestore: firebaseFirestore);
 
   Future<void> createEvent(File image, Event event) async {
-    DocumentReference docRef =
-        await _firebaseFirestore.collection('events').add(event.toSnapshot());
+    var eventRef = await _firebaseFirestore.collection('events').doc();
     var user = await this.getUserLogged();
-    user.eventsCreated.add(docRef.id);
+    var userRef = await _firebaseFirestore.collection('users').doc(user.id);
+    user.eventsCreated.add(eventRef.id);
     user.numEventsCreated = user.eventsCreated.length;
-    await _firebaseFirestore
-        .collection('users')
-        .doc(user.id)
-        .update(user.toSnapshot());
-    var urlImage = await this.setImageToStorage(image, "events", docRef.id);
+
+    var urlImage = await this.setImageToStorage(image, "events", eventRef.id);
     event.imageUrl = urlImage;
-    await _firebaseFirestore
-        .collection('events')
-        .doc(docRef.id)
-        .update(event.toSnapshot());
+
+    WriteBatch batch = _firebaseFirestore.batch();
+    batch.set(eventRef, event.toSnapshot());
+    batch.update(userRef, user.toSnapshot());
+    await batch.commit();
   }
 
   Future<void> addPartecipationEvent(Event event) async {
