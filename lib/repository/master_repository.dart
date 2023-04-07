@@ -20,6 +20,7 @@ abstract class MasterRepository {
         _firebaseStorage = firebaseStorage,
         _firebaseFirestore = firebaseFirestore;
 
+  //Metodo utile per ottenere l'oggetto User con i dati dell'utente loggato
   Future<model.User> getUserLogged() async {
     DocumentSnapshot documentSnapshot = await _firebaseFirestore
         .collection('users')
@@ -36,6 +37,8 @@ abstract class MasterRepository {
     }
   }
 
+  //GetAll di tutti gli eventi della base di dati che hanno una data ora di fine
+  //maggiore o uguale a quella attuale
   Future<List<Event>> getEvents() async {
     final CollectionReference collectionReference =
         FirebaseFirestore.instance.collection('events');
@@ -56,6 +59,7 @@ abstract class MasterRepository {
     return events;
   }
 
+  //GetAll degli utenti del database
   Future<List<model.User>> getUsers() async {
     final CollectionReference collectionReference =
         FirebaseFirestore.instance.collection('users');
@@ -72,6 +76,8 @@ abstract class MasterRepository {
     return users;
   }
 
+  //Batch con cui vengono aggiornati due campi in contemporanea come se ciò avvenisse
+  //da un unica chiamata atomica di un documento events e un documento users
   Future<void> BatchUpdate(Event event, model.User user) async {
     CollectionReference usersCollection =
         FirebaseFirestore.instance.collection('users');
@@ -87,6 +93,7 @@ abstract class MasterRepository {
     await batch.commit();
   }
 
+  //Metodo per caricare un file immagine dalla galleria al Firebase Storage
   Future<String> setImageToStorage(
       File file, String forldeName, String nameId) async {
     //var extension = p.extension(file.path);

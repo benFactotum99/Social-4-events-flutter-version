@@ -8,6 +8,9 @@ import 'package:social_4_events/helpers/generic_functions_helpers/generic_functi
 import 'package:social_4_events/helpers/view_helpers/arguments/event_detail_location_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/map_location.dart';
 
+//Questo widget serve per la visualizzazione della localita di un evento
+//Infatti come parametro viene passato un EventDetialLocationViewArguments
+//Contenente un oggetto MapLocation con le coordinate della località dell'evento
 class EventDetailLocationView extends StatefulWidget {
   static String route = '/event_detail_location_view';
   final EventDetialLocationViewArguments eventDetialLocationViewArguments;
@@ -29,6 +32,7 @@ class _EventDetailLocationViewState extends State<EventDetailLocationView> {
     super.initState();
 
     setState(() {
+      //Si setta il marker sulla mappa
       googleMapMarkers.add(
         Marker(
           markerId:
@@ -43,6 +47,8 @@ class _EventDetailLocationViewState extends State<EventDetailLocationView> {
     });
   }
 
+  //Metodo utile per lo spostamento della camera in base all'indirizzo digitato
+  //dall'utente
   void goToPlace(String address) async {
     final controller = await googleMapController.future;
 
@@ -76,10 +82,14 @@ class _EventDetailLocationViewState extends State<EventDetailLocationView> {
       ),
       body: Stack(
         children: [
+          //Elemento GoogleMap con mappa personalizzata presa da un file
+          //Che viene centrata sulla località di appartenenza dell'evento
           GoogleMap(
             markers: googleMapMarkers,
             initialCameraPosition: CameraPosition(
-              target: LatLng(37.42796133580664, -122.085749655962),
+              target: LatLng(
+                  widget.eventDetialLocationViewArguments.location.latitude,
+                  widget.eventDetialLocationViewArguments.location.longitude),
               zoom: 15,
             ),
             myLocationButtonEnabled: false,
@@ -90,6 +100,7 @@ class _EventDetailLocationViewState extends State<EventDetailLocationView> {
               controller.setMapStyle(styles);
             },
           ),
+          //Search box che effettua gli spostamenti nella mappa nelle località indicate dall'utente
           Positioned(
             top: 20,
             left: 20,

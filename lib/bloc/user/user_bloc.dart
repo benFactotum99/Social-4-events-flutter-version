@@ -10,6 +10,7 @@ class UserBloc extends Bloc<UserBlocEvent, UserBlocState> {
 
   UserBloc({required this.eventRepository, required this.userRepository})
       : super(UserBlocStateUserLoggedLoading()) {
+    //Implementazione del fetch degli user con gli stati loading e loaded
     on<UserBlocEventFetch>(
       (event, emit) async {
         try {
@@ -22,6 +23,8 @@ class UserBloc extends Bloc<UserBlocEvent, UserBlocState> {
         }
       },
     );
+
+    //Metodo per il recupero dell'utente loggato e dei suoi eventi, sia creati che partecipati
     on<UserBlocEventUserLoggedFetch>(
       (event, emit) async {
         try {

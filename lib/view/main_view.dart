@@ -18,6 +18,8 @@ import 'package:social_4_events/view/search/search_user_view.dart';
 import 'package:social_4_events/view/search/search_view.dart';
 import 'package:social_4_events/view/user/user_view.dart';
 
+//View principale in cui viene definito il bottom bar menu: numero e nomi degli item
+//Qui vengono anche inizializzate tutte le rotte dell'applicativo con i vari parametri
 class MainView extends StatelessWidget {
   static String route = '/main_view';
   final _tab1navigatorKey = GlobalKey<NavigatorState>();

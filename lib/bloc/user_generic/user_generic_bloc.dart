@@ -12,6 +12,7 @@ class UserGenericBloc extends Bloc<UserGenericBlocEvent, UserGenericBlocState> {
 
   UserGenericBloc({required this.eventRepository, required this.userRepository})
       : super(UserGenericBlocStateLoading()) {
+    //Metodo per il recupero di un generico utente conoscendone l'id
     on<UserGenericBlocEventFetchUserById>(
       (event, emit) async {
         try {

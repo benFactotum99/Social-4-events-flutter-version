@@ -12,6 +12,7 @@ import 'package:social_4_events/helpers/singleton/position_singleton.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/add_event_location_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/map_location.dart';
 
+//In questo widget faccio apparire la mappa e consento la selezione di una località per un determinato evento
 class AddEventLocationView extends StatefulWidget {
   static String route = '/add_event_location_view';
   final AddEventLocationViewArguments addEventLocationViewArguments;

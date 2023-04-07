@@ -14,6 +14,8 @@ import 'package:social_4_events/view/add/add_event_view.dart';
 import 'package:social_4_events/view/home/event_detail_view.dart';
 import 'package:social_4_events/view/home/event_pop_up_view.dart';
 
+//Home dell'app in cui si visualizza la mappa del globo con i marker
+//che stanno a rappresentare gli eventi creati
 class HomeView extends StatefulWidget {
   static String route = '/home_view';
   const HomeView({super.key});
@@ -85,6 +87,7 @@ class _HomeViewState extends State<HomeView> {
               PositionSingleton.latLng != null) {
             final events = state.events;
 
+            //Con uesto for si cicla gli eventi e ci si creano i marker
             for (var event in events) {
               googleMapMarkers.add(
                 Marker(
@@ -132,6 +135,7 @@ class _HomeViewState extends State<HomeView> {
                     controller.setMapStyle(styles);
                   },
                 ),
+                //Text input per il search della località degli eventi
                 Positioned(
                   top: 20,
                   left: 20,
@@ -164,6 +168,8 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  //Init per consentire all'app di acquisire (sotto permesso dell'utente)
+  //la posizione esatta dell'utente
   void initAsync() async {
     try {
       var position = await determinePosition();
@@ -177,6 +183,7 @@ class _HomeViewState extends State<HomeView> {
     setState(() {});
   }
 
+  //Spostamento della camera ad una località conoscendone l'indirizzo
   void goToPlace(String address) async {
     final controller = await googleMapController.future;
 
@@ -192,6 +199,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  //Spostamento della camera tramite l'oggetto Position
   void moveToUserPlace(Position position) async {
     final controller = await googleMapController.future;
 
@@ -205,6 +213,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  //Spostamento della camera alla posizione di default
   void moveToDefaultPlace() async {
     final controller = await googleMapController.future;
 

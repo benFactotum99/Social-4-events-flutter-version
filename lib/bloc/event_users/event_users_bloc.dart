@@ -15,6 +15,8 @@ class EventUsersBloc extends Bloc<EventUsersBlocEvent, EventUsersBlocState> {
     required this.eventRepository,
     required this.userRepository,
   }) : super(EventUsersBlocStateLoading()) {
+    //Implementazione dell'evento che si occupa del recupero degli utenti che
+    //hanno partecipato all'evento
     on<EventUsersBlocEventFetch>(
       (event, emit) async {
         try {

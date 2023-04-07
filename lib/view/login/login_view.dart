@@ -8,6 +8,7 @@ import 'package:social_4_events/components/custom_button.dart';
 import 'package:social_4_events/components/show_my_dialog.dart';
 import 'package:social_4_events/view/main_view.dart';
 
+//Vista per il login dell'utente
 class LoginView extends StatefulWidget {
   static String route = '/';
   const LoginView({super.key});
@@ -25,12 +26,15 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationBloc, AuthenticationBlocState>(
       listener: (context, state) {
+        //Una volta emesso l'evento per l'effettuarsi dell'autenticazione
+        //se il procedimento va a buon fine ho questo stato e dunque la navigazione verso la main view
         if (state is AuthenticationBlocStateSuccessAuth) {
           Navigator.of(context, rootNavigator: true).pushReplacement(
             MaterialPageRoute(
               builder: (context) => MainView(),
             ),
           );
+          //In caso di errore ho un pop up con il messaggio di errore appropriato
         } else if (state is AuthenticationBlocStateErrorAuth) {
           ShowMyDialog(context, "Errore", state.errorMessage);
         }
@@ -62,6 +66,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
+  //Text field dell'email
   Widget emalTextFormSection() => TextFormField(
         controller: emailTextController,
         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -102,6 +107,7 @@ class _LoginViewState extends State<LoginView> {
         onChanged: (text) {},
       );
 
+  //Text field della password
   Widget passwordTextFormSection() => TextFormField(
         controller: passwordTextController,
         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -143,6 +149,7 @@ class _LoginViewState extends State<LoginView> {
         onChanged: (text) {},
       );
 
+  //Button per effettuare il login che emette l'evento AuthenticationBlocEventLogin
   Widget buttonLoginSection() =>
       BlocBuilder<AuthenticationBloc, AuthenticationBlocState>(
           builder: (context, state) {

@@ -12,6 +12,7 @@ import 'package:social_4_events/view/main_view.dart';
 import 'package:social_4_events/view/search/search_user_view.dart';
 import 'package:social_4_events/view/user/user_view.dart';
 
+//View che consente la visualizzazione degli utenti ricercati dall'utente
 class SearchView extends StatefulWidget {
   static String route = '/search_view';
   const SearchView({super.key});
@@ -36,10 +37,13 @@ class _SearchViewState extends State<SearchView> {
     //final indexTabCubit = context.watch<IndexTabCubit>();
     return BlocListener<UserBloc, UserBlocState>(
       listener: (context, state) {
+        //poichè inizialmente si presentera come una schermata vuota con solo il
+        //search box al loaded viene solo settato lo stato della variabile users
         if (state is UserBlocStateLoaded) {
           setState(() {
             users = state.users;
           });
+          //In caso di errore questa variabile va a null
         } else if (state is UserBlocStateError) {
           setState(() {
             users = null;
@@ -48,6 +52,9 @@ class _SearchViewState extends State<SearchView> {
       },
       child: Scaffold(
         appBar: users != null
+            //Se non ci sono errori e quindi users è != null
+            //Allora viene settata l'app bat con su di essa un search
+            //box che effettua una ricerca dinamica sugli utenti
             ? AppBar(
                 elevation: 1,
                 backgroundColor: Colors.white,
@@ -74,6 +81,8 @@ class _SearchViewState extends State<SearchView> {
                                 username.contains(input);
                           }).toList();
 
+                          //La lista di users viene quindi filtrata ed assegnata
+                          //a usersView, il quale andrà a popolare il componente grafico
                           if (usersViewTmp.isEmpty) {
                             usersView = [];
                           } else {
@@ -98,6 +107,7 @@ class _SearchViewState extends State<SearchView> {
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: Column(
               children: [
+                //Ecco la sezione in cui si implementa la lista di user view (Lista di user)
                 if (users != null)
                   Expanded(
                     child: ListView.builder(
@@ -107,10 +117,14 @@ class _SearchViewState extends State<SearchView> {
                         return InkWell(
                           onTap: () {
                             print(usersView[index].id);
+                            //Se l'utente selezionato è loggato allora si cambia lo stato al cubit
+                            //Simulando il tap della sezione profilo della bottom bar
                             if (FirebaseAuth.instance.currentUser!.uid ==
                                 usersView[index].id) {
                               BlocProvider.of<IndexTabCubit>(context)
                                   .setIndexByEnum(TabIndexEnum.Profile);
+                              //Altrimenti se l'utente selezionato non è quello loggato si andrà a valorizzare una view
+                              //predisposta per gli utenti generici
                             } else {
                               Navigator.of(context).pushNamed(
                                   SearchUserView.route,

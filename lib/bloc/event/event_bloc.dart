@@ -8,6 +8,11 @@ class EventBloc extends Bloc<EventBlocEvent, EventBlocState> {
   final EventRepository eventRepository;
 
   EventBloc({required this.eventRepository}) : super(EventBlocStateLoading()) {
+    //Implementazione del metodo di get all dell'event bloc
+    //inizialmente viene emesso lo stato di loading alla ricezione dell'evento
+    //EventBlocEventFetch dalla view, si effettua il getAll su Events dal Repository
+    //Successivamente si emette EventBlocStateLoaded passando la lista di eventi
+    //oppure EventBlocStateError con il messaggio di testo in caso di errore
     on<EventBlocEventFetch>(
       (event, emit) async {
         try {
@@ -21,6 +26,7 @@ class EventBloc extends Bloc<EventBlocEvent, EventBlocState> {
       },
     );
 
+    //Implementazione del create event
     on<EventBlocEventCreate>(
       (event, emit) async {
         try {
@@ -42,6 +48,7 @@ class EventBloc extends Bloc<EventBlocEvent, EventBlocState> {
       },
     );
 
+    //Implementazione dell'ad partecipation
     on<EventBlocEventAddPartecipation>(
       (event, emit) async {
         try {
@@ -55,6 +62,7 @@ class EventBloc extends Bloc<EventBlocEvent, EventBlocState> {
       },
     );
 
+    //Implementazione del remove partecipation
     on<EventBlocEventRemovePartecipation>(
       (event, emit) async {
         try {

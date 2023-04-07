@@ -16,6 +16,7 @@ import 'package:social_4_events/model/user.dart' as model;
 import 'package:social_4_events/view/search/search_user_view.dart';
 import 'package:social_4_events/view/user/user_view.dart';
 
+//Widget che mostra la lista degli utenti che partecipano ad un determinato evento
 class EventUsersView extends StatefulWidget {
   static String route = '/event_users_view';
   final EventUsersViewArguments eventUsersViewArguments;
@@ -61,6 +62,8 @@ class _EventUsersViewState extends State<EventUsersView> {
     );
   }
 
+  //Con questa sezione si costruisce la parte dell'app che permette la visualizzazione degli utenti
+  //Se non ci sono utenti che partecipano si scrivera il messaggio sottostante
   userListSection() => BlocBuilder<EventUsersBloc, EventUsersBlocState>(
         builder: (context, state) {
           if (state is EventUsersBlocStateLoaded) {

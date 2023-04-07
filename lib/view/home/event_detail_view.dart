@@ -20,6 +20,7 @@ import 'package:social_4_events/view/home/event_detail_location_view.dart';
 import 'package:social_4_events/view/home/event_users_view.dart';
 import 'package:social_4_events/view/main_view.dart';
 
+//In questo widget si visualizzano i dettagli dell'evento
 class EventDetailView extends StatefulWidget {
   static String route = '/event_detail_view';
   final EventDetailViewArguments eventDetailViewArguments;
@@ -145,6 +146,8 @@ class _EventDetailViewState extends State<EventDetailView> {
     );
   }
 
+  //In questo punto viene settata l'immagine dell'evento tramite il link
+  //Se l'immagine non è presente verrà sostituita con un'icona
   imageEventSection() => InkWell(
         onTap: () {},
         child: CircleAvatar(
@@ -279,6 +282,7 @@ class _EventDetailViewState extends State<EventDetailView> {
         timeController: endTimeTextController,
       );
 
+  //Bottone che setta la partecipazione da un evento o la cancella
   saveButtonSection() => BlocBuilder<EventBloc, EventBlocState>(
         builder: (context, state) {
           return CustomButton(

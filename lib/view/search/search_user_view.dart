@@ -8,6 +8,11 @@ import 'package:social_4_events/helpers/view_helpers/arguments/search_user_view_
 import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/view/home/event_detail_view.dart';
 
+//Widget dedicata alla visualizzazione dei dettagli di un utente generico
+//e dei suoi eventi, creati e partecipati
+//Widget molto simile allo user_view (infatti si ha un po di codice ripetuto
+//che con il refactoring si potrebbe togliere), con la differenza che ho come parametro l'id di un generico
+//utente selezionato nella search_view
 class SearchUserView extends StatefulWidget {
   static String route = '/search_user_view';
   final SearchUserViewArguments searchUserViewArguments;
@@ -40,6 +45,10 @@ class _SearchUserViewState extends State<SearchUserView>
             var user = state.user;
             var eventsCreated = state.eventsCreated;
             var eventsPartecipated = state.eventsPartecipated;
+            //Ho deciso di utilizzare questo componente per consentire a questo widget di
+            //avere uno scroll con una tab bar in cui appena la tab arriva a conttatto
+            //con l'app bar loro diventano un'unica cosa con la griglia di immagini che
+            //si adatta allo schermo del telefono
             return NestedScrollView(
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
@@ -119,6 +128,7 @@ class _SearchUserViewState extends State<SearchUserView>
                       ),
                     ),*/
                   //SliverToBoxAdapter(child: SizedBox(height: 20)),
+                  //Qui ho il componente che consente alla tab bar di collidere con l'appbar
                   SliverPersistentHeader(
                     delegate: _MyTabBar(
                       TabBar(
@@ -163,6 +173,7 @@ class _SearchUserViewState extends State<SearchUserView>
     );
   }
 
+  //Sezione per l'immagine dell'utente, se non è presente la si sostituisce con un'icona
   imageEventSection(String imageUrl) => SliverToBoxAdapter(
         child: InkWell(
           onTap: () {},
@@ -185,6 +196,7 @@ class _SearchUserViewState extends State<SearchUserView>
         ),
       );
 
+  //Sezione per la gestione della griglia degli eventi creati
   eventsCreatedGridSection(List<Event> eventsCreated) => GridView.count(
         padding: EdgeInsets.zero,
         crossAxisCount: 3,
@@ -227,6 +239,7 @@ class _SearchUserViewState extends State<SearchUserView>
         ),
       );
 
+  //Sezione per la gestione della griglia degli eventi partecipati
   eventsPartecipatedGridSection(List<Event> eventsPartecipated) =>
       GridView.count(
         padding: EdgeInsets.zero,
@@ -272,6 +285,7 @@ class _SearchUserViewState extends State<SearchUserView>
       );
 }
 
+//Classe di supporto al tab bar
 class _MyTabBar extends SliverPersistentHeaderDelegate {
   _MyTabBar(this._tabBar);
 

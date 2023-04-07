@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_4_events/model/event.dart';
 import 'package:social_4_events/view/home/event_detail_view.dart';
 
+//Pop up che mostra un breve escurso sui dati dell'evento
 class EventPopUpView extends StatefulWidget {
   final Event event;
   final Function()? onPressed;

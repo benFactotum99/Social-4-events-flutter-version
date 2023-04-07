@@ -14,6 +14,8 @@ import 'package:social_4_events/view/app.dart';
 import 'package:social_4_events/view/home/event_detail_view.dart';
 import 'package:social_4_events/view/login/login_view.dart';
 
+//Widget dedicata alla visualizzazione dei dettagli dell'utente loggato
+//e dei suoi eventi, creati e partecipati
 class UserView extends StatefulWidget {
   static String route = '/user_view';
   const UserView();
@@ -52,6 +54,10 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
               var user = state.user;
               var eventsCreated = state.eventsCreated;
               var eventsPartecipated = state.eventsPartecipated;
+              //Ho deciso di utilizzare questo componente per consentire a questo widget di
+              //avere uno scroll con una tab bar in cui appena la tab arriva a conttatto
+              //con l'app bar loro diventano un'unica cosa con la griglia di immagini che
+              //si adatta allo schermo del telefono
               return NestedScrollView(
                 headerSliverBuilder:
                     (BuildContext context, bool innerBoxIsScrolled) {
@@ -164,6 +170,7 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
                       ),
                     ),*/
                     //SliverToBoxAdapter(child: SizedBox(height: 20)),
+                    //Qui ho il componente che consente alla tab bar di collidere con l'appbar
                     SliverPersistentHeader(
                       delegate: _MyTabBar(
                         TabBar(
@@ -209,6 +216,7 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
     );
   }
 
+  //Sezione per l'immagine dell'utente, se non è presente la si sostituisce con un'icona
   imageEventSection(String imageUrl) => SliverToBoxAdapter(
         child: InkWell(
           onTap: () {},
@@ -231,6 +239,7 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
         ),
       );
 
+  //Sezione per la gestione della griglia degli eventi creati
   eventsCreatedGridSection(List<Event> eventsCreated) => GridView.count(
         padding: EdgeInsets.zero,
         crossAxisCount: 3,
@@ -273,6 +282,7 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
         ),
       );
 
+  //Sezione per la gestione della griglia degli eventi partecipati
   eventsPartecipatedGridSection(List<Event> eventsPartecipated) =>
       GridView.count(
         padding: EdgeInsets.zero,
@@ -318,6 +328,7 @@ class _UserViewState extends State<UserView> with TickerProviderStateMixin {
       );
 }
 
+//Classe di supporto al tab bar
 class _MyTabBar extends SliverPersistentHeaderDelegate {
   _MyTabBar(this._tabBar);
 

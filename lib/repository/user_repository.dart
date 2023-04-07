@@ -22,6 +22,7 @@ class UserRepository extends MasterRepository {
             firebaseStorage: firebaseStorage,
             firebaseFirestore: firebaseFirestore);
 
+  //Metodo di login su Firebase Authentication
   Future<void> login(String email, String password) async {
     await _firebaseAuth.signInWithEmailAndPassword(
       email: email,
@@ -29,15 +30,19 @@ class UserRepository extends MasterRepository {
     );
   }
 
+  //Metodo di logout
   Future<void> logout() async {
     await _firebaseAuth.signOut();
   }
 
+  //Metodo che controlla se è stata effettuata la login
+  //nell'applicazione del dispositivo
   Future<bool> isLoggedIn() async {
     final currentUser = _firebaseAuth.currentUser;
     return currentUser != null;
   }
 
+  //Metodo con cui ottengo l'id dell'utente loggato
   Future<String> getUserId() async {
     var flag = await isLoggedIn();
     if (flag == true) {
@@ -48,10 +53,13 @@ class UserRepository extends MasterRepository {
     }
   }
 
+  //Metodo con cui ottengo l'oggetto User con i dati
+  //dell'utente loggato
   Future<model.User> getUserLogged() async {
     return await super.getUserLogged();
   }
 
+  //Metodo per ottenere un utente conoscendone l'id
   Future<model.User?> getUserById(String userId) async {
     DocumentSnapshot documentSnapshot =
         await _firebaseFirestore.collection('users').doc(userId).get();
@@ -66,6 +74,7 @@ class UserRepository extends MasterRepository {
     }
   }
 
+  //Metodo che consente di ottenere una lista di utenti a partire da una lista di id
   Future<List<model.User>> getUsersByIds(List<String> ids) async {
     List<model.User> users = List.empty(growable: true);
     for (String id in ids) {

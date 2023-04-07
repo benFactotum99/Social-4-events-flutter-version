@@ -4,7 +4,7 @@ import 'package:social_4_events/cubit/index_tab_cubit.dart';
 import 'package:social_4_events/helpers/enums/tab_index_enum.dart';
 
 class PersistentBottomBarScaffold extends StatefulWidget {
-  /// pass the required items for the tabs and BottomNavigationBar
+  // qui vengono passati i parametri della bottom bar menu permanent
   final List<PersistentTabItem> items;
   final Color selectedItemColor;
   final String initialRoute;
@@ -28,6 +28,7 @@ class _PersistentBottomBarScaffoldState
   @override
   void initState() {
     super.initState();
+    //Nell'init si ha il set del valore di defaul del cubit che setta l'index su Home
     BlocProvider.of<IndexTabCubit>(context).setIndexByEnum(TabIndexEnum.Home);
   }
 
@@ -37,25 +38,26 @@ class _PersistentBottomBarScaffoldState
       builder: (context, indexPage) {
         return WillPopScope(
           onWillPop: () async {
-            /// Check if curent tab can be popped
+            // si contolla se il tap corrente può essere cliccato
             if (widget.items[indexPage].navigatorkey?.currentState?.canPop() ??
                 false) {
               widget.items[indexPage].navigatorkey?.currentState?.pop();
               return false;
             } else {
-              // if current tab can't be popped then use the root navigator
+              // se il tab non può essere cliccato su va con la root navigation
               return true;
             }
           },
           child: Scaffold(
-            /// Using indexedStack to maintain the order of the tabs and the state of the
-            /// previously opened tab
+            // si utilizza un index stack per mantenere l'ordine delle tab e
+            // lo stato del tab precedentemente aperto
             body: IndexedStack(
               index: indexPage, //_selectedTab,
               children: widget.items
                   .map((page) => Navigator(
-                        /// Each tab is wrapped in a Navigator so that naigation in
-                        /// one tab can be independent of the other tabs
+                        // Ogni tab è wrappata in un navigator, quindi la navigazione in ogni
+                        // tab può essere indipendente dagli altri tab, ma qui viene centralizzata
+                        // la navigazione a delle rotte passate come parametro
                         key: page.navigatorkey,
                         initialRoute: widget.initialRoute,
                         onGenerateRoute: widget.onGenerateRoute,
@@ -68,7 +70,7 @@ class _PersistentBottomBarScaffoldState
                   .toList(),
             ),
 
-            /// Define the persistent bottom bar
+            // viene definita la persisten bottom bar
             bottomNavigationBar: BottomNavigationBar(
               backgroundColor: Colors.white,
               type: BottomNavigationBarType.fixed,
@@ -77,13 +79,11 @@ class _PersistentBottomBarScaffoldState
               unselectedItemColor: Colors.grey,
               onTap: (index) {
                 /// Check if the tab that the user is pressing is currently selected
+                // si controlla se la tab che l'utente sta premendo è quella selezionata
                 if (index == indexPage) {
-                  /// if you want to pop the current tab to its root then use
                   widget.items[index].navigatorkey?.currentState
                       ?.popUntil((route) => route.isFirst);
 
-                  /// if you want to pop the current tab to its last page
-                  /// then use
                   // widget.items[index].navigatorkey?.currentState?.pop();
                 } else {
                   BlocProvider.of<IndexTabCubit>(context).setIndex(index);
@@ -101,7 +101,7 @@ class _PersistentBottomBarScaffoldState
   }
 }
 
-/// Model class that holds the tab info for the [PersistentBottomBarScaffold]
+/// Modello delle tab info per [PersistentBottomBarScaffold]
 class PersistentTabItem {
   final Widget tab;
   final GlobalKey<NavigatorState>? navigatorkey;

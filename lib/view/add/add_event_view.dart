@@ -51,19 +51,28 @@ class _AddEventViewState extends State<AddEventView> {
   Widget build(BuildContext context) {
     return BlocListener<EventBloc, EventBlocState>(
       listener: (context, state) {
+        //Se il listener rileva lo stato EventBlocStateCreated si naviga
+        //verso la MainView con il pushReplacement
         if (state is EventBlocStateCreated) {
           Navigator.of(context, rootNavigator: true).pushReplacement(
             MaterialPageRoute(
               builder: (context) => MainView(),
             ),
           );
+          //Stessa cosa anche in caso di errore nella creazione ma con la stampa
+          //sul terminale e un avviso allo user
         } else if (state is EventBlocStateError) {
           print(state.errorMessage);
-          Navigator.of(context, rootNavigator: true).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => MainView(),
-            ),
-          );
+          CustomShowMyDialog(context, "Errore",
+              "La creazione dell'evento non è andata a buon fine.", () {
+            Navigator.of(context).pop();
+            Navigator.of(context, rootNavigator: true).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => MainView(),
+              ),
+            );
+          });
+          //In caso di errore per l'immagine si avverte l'utente e si naviga sulla home
         } else if (state is EventBlocStateImageError) {
           //ShowMyDialog();
           CustomShowMyDialog(context, "Errore",
@@ -138,6 +147,7 @@ class _AddEventViewState extends State<AddEventView> {
     );
   }
 
+  //Metodo che si occupa del caricamento delle immagini al click dell'icona
   imageEventSection() => InkWell(
         onTap: () async {
           try {
@@ -186,6 +196,7 @@ class _AddEventViewState extends State<AddEventView> {
         ),
       );
 
+  //Text inpu per il nome
   nameTextSection() => CustomTextForm(
         myLabelText: 'Nome',
         textController: nameTextController,
@@ -241,6 +252,8 @@ class _AddEventViewState extends State<AddEventView> {
         onChanged: (String? value) {},
       );
 
+  //Al click di questa particolare text form si apre la schermata con la mappa
+  //dove si seleziona la località in cui si vuole effettuare la festa
   locationSection() => CustomTextLocationForm(
         myLabelText: 'Località',
         textController: locationTextController,
@@ -272,6 +285,7 @@ class _AddEventViewState extends State<AddEventView> {
         },
       );
 
+  //Al click di questa textForm si apre un box date dove si seleziona una data
   startDateTextSection() => CustomTextDateForm(
         myLabelText: 'Inizio',
         onChanged: (String? value) {},
@@ -281,6 +295,7 @@ class _AddEventViewState extends State<AddEventView> {
         dateController: startDateTextController,
       );
 
+  //Al click di questa textForm si apre un box timer in cui si sceglie l'ora
   startTimeTextSection() => CustomTextTimeForm(
         myLabelText: 'Ora inizio',
         onChanged: (String? value) {},
@@ -290,6 +305,7 @@ class _AddEventViewState extends State<AddEventView> {
         timeController: startTimeTextController,
       );
 
+  //Al click di questa textForm si apre un box date dove si seleziona una data
   endDateTextSection() => CustomTextDateForm(
         myLabelText: 'Fine',
         onChanged: (String? value) {},
@@ -299,6 +315,7 @@ class _AddEventViewState extends State<AddEventView> {
         dateController: endDateTextController,
       );
 
+  //Al click di questa textForm si apre un box timer in cui si sceglie l'ora
   endTimeTextSection() => CustomTextTimeForm(
         myLabelText: 'Ora fine',
         onChanged: (String? value) {},
@@ -308,6 +325,7 @@ class _AddEventViewState extends State<AddEventView> {
         timeController: endTimeTextController,
       );
 
+  //Bottone che controlla se i validate sono rispettati e salva l'evento
   saveButtonSection() => BlocBuilder<EventBloc, EventBlocState>(
         builder: (context, state) {
           return CustomButton(

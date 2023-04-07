@@ -23,6 +23,10 @@ import 'package:social_4_events/view/main_view.dart';
 import 'package:social_4_events/view/search/search_view.dart';
 import 'package:social_4_events/view/user/user_view.dart';
 
+//In questo widget si inizializza l'app e vengono inserite tutte le dipendenze
+//tramite dependency injection gestendo poi i vari bloc component come singleton nell'app
+//Inoltre in questa classe si anima lo splash screen e si avvia la main view o la login view
+//in base allo stato di autenticazione dell'utente
 class App extends StatelessWidget {
   const App();
 

@@ -10,6 +10,12 @@ class AuthenticationBloc
 
   AuthenticationBloc({required this.userRepository})
       : super(AuthenticationBlocStateInitialized()) {
+    //Implementazione dell'evento chiamato all'avvio dell'app
+    //in cui si controlla se nell'app sul dispositivo c'è stato
+    //un login effettuato dall'utente, e in caso affermativo si emette lo stato
+    //AuthenticationBlocStateAuthenticated altrimenti
+    //AuthenticationBlocStateUnauthenticated e in caso di errore si emette
+    //AuthenticationBlocStateUnauthenticated
     on<AuthenticationBlocEventAppStarted>((event, emit) async {
       try {
         var flag = await userRepository.isLoggedIn();
@@ -24,6 +30,8 @@ class AuthenticationBloc
       }
     });
 
+    //Evento implementato per effettuare il login con conseguente messaggio personalizzato in caso di errori
+    //azioni non consentite svolte dall'utente
     on<AuthenticationBlocEventLogin>((event, emit) async {
       try {
         emit(AuthenticationBlocStateLoadingAuth());
@@ -64,6 +72,7 @@ class AuthenticationBloc
       }
     });
 
+    //Implementazione del logout dell'utente
     on<AuthenticationBlocEventLogout>((event, emit) async {
       try {
         await userRepository.logout();

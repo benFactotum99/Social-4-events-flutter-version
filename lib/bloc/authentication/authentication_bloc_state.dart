@@ -1,5 +1,6 @@
 abstract class AuthenticationBlocState {}
 
+//Insieme complessivo di stati che regolano il bloc authentication
 class AuthenticationBlocStateInitialized extends AuthenticationBlocState {}
 
 class AuthenticationBlocStateUnitialized extends AuthenticationBlocState {}
