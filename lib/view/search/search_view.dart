@@ -106,6 +106,7 @@ class _SearchViewState extends State<SearchView> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
+                            print(usersView[index].id);
                             if (FirebaseAuth.instance.currentUser!.uid ==
                                 usersView[index].id) {
                               BlocProvider.of<IndexTabCubit>(context)

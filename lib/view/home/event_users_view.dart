@@ -7,6 +7,8 @@ import 'package:social_4_events/bloc/event_users/event_users_bloc_state.dart';
 import 'package:social_4_events/bloc/user/user_bloc.dart';
 import 'package:social_4_events/bloc/user/user_bloc_event.dart';
 import 'package:social_4_events/bloc/user/user_bloc_state.dart';
+import 'package:social_4_events/cubit/index_tab_cubit.dart';
+import 'package:social_4_events/helpers/enums/tab_index_enum.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/event_users_view_arguments.dart';
 import 'package:social_4_events/helpers/view_helpers/arguments/search_user_view_arguments.dart';
 import 'package:social_4_events/model/event.dart';
@@ -66,25 +68,13 @@ class _EventUsersViewState extends State<EventUsersView> {
             if (users.isEmpty) {
               return centerMessageSection(
                   "Per questo evento al momento non ci sono utenti partecipanti.");
-            }
-            return Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-                itemCount: users.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      if (FirebaseAuth.instance.currentUser!.uid ==
-                          users[index].id) {
-                        //TODO: qui bisognerebbe simulare bene il tap della bottom bar sul profilo
-                        Navigator.of(context).pushNamed(UserView.route);
-                      } else {
-                        Navigator.of(context).pushNamed(SearchUserView.route,
-                            arguments:
-                                SearchUserViewArguments(users[index].id));
-                      }
-                    },
-                    child: Padding(
+            } else {
+              return Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  itemCount: users.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Row(
                         children: [
@@ -113,11 +103,11 @@ class _EventUsersViewState extends State<EventUsersView> {
                           ),
                         ],
                       ),
-                    ),
-                  );
-                },
-              ),
-            );
+                    );
+                  },
+                ),
+              );
+            }
           } else if (state is EventUsersBlocStateLoading) {
             return Expanded(
               child: Center(
