@@ -1,16 +1,5 @@
 # SOCIAL 4 EVENTS
 
-**UNIVERSITÀ POLITECNICA DELLE MARCHE**
-
-Dipartimento di Ingegnerie e Informazione
-Corso di Laurea Triennale in Ingegneria Informatica e dell’automazione
-Corso di Programmazione Mobile
-
-Prof. Emanuele Storti			
-Relazione di Daniele Benfatto
-
-Anno accademico 2022/2023
-
 ## Che cosa?
 
 Social4Events è un applicativo che consente agli utenti loggati di creare e partecipare ad eventi, escludendo l'accesso ai non registrati. Una volta scaricata l'applicazione, gli utenti possono registrarsi o accedere inserendo le proprie credenziali. La home dell'applicazione presenta una mappa che visualizza tutti gli eventi disponibili. Gli utenti possono effettuare una ricerca degli eventi in base alla posizione sulla mappa e partecipare a quelli che preferiscono. L'applicazione presenta inoltre un menù con diverse opzioni, tra cui la possibilità di visualizzare il proprio profilo utente, cercare altri utenti in base al nome e tornare alla home. Il profilo utente include una serie di dati personali, come l'Id utente, il nome, il cognome, l'età, la città di appartenenza, il CAP, l'immagine del profilo, il numero di eventi creati e la data di nascita. L'evento, invece, include il nome, la descrizione, l'ora e la data di inizio e fine, la durata, la locazione, l'immagine dell'evento, il numero massimo di partecipanti, il nome dell'organizzatore e la lista dei partecipanti. 
