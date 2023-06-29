@@ -1,6 +1,6 @@
 # SOCIAL 4 EVENTS
 
-** UNIVERSITÀ POLITECNICA DELLE MARCHE **
+**UNIVERSITÀ POLITECNICA DELLE MARCHE**
 Dipartimento di Ingegnerie e Informazione
 Corso di Laurea Triennale in Ingegneria Informatica e dell’automazione
 Corso di Programmazione Mobile
