@@ -1,10 +1,9 @@
+# SOCIAL 4 EVENTS
 
 UNIVERSITÀ POLITECNICA DELLE MARCHE 
 Dipartimento di Ingegnerie e Informazione
 Corso di Laurea Triennale in Ingegneria Informatica e dell’automazione
 Corso di Programmazione Mobile
-
-SOCIAL 4 EVENTS
 
 Prof. Emanuele Storti			
 Relazione di Daniele Benfatto
